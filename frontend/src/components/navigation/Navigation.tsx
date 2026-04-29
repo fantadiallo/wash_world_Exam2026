@@ -2,7 +2,14 @@
 import { useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { NavLink } from '@/src/types/navLinks'
+import Button from '@/src/components/buttons/Button.tsx'
+import { faBars } from '@fortawesome/free-solid-svg-icons'
+import { faTimes } from '@fortawesome/free-solid-svg-icons'
+
 import Link from 'next/link'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
+
 
 const links: NavLink[] = [
   { text: 'Hjem', href: '/' },
@@ -35,13 +42,9 @@ export default function Navigation()
           </span>
         )}
 
-        <button
-          className="text-white cursor-pointer"
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          {isOpen ? 'Close' : 'Open'}
-        </button>
-
+        <Button className="text-white text-xl cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
+            {!isOpen ? <FontAwesomeIcon className="transition-text duration-150 ease-in hover:text-(--brand-green-dark-bg)" icon={faBars} /> : <FontAwesomeIcon className="transition-text duration-150 ease-in hover:text-(--brand-green-dark-bg)" icon={faTimes} />}
+        </Button>
       </div>
 
       {isOpen && (
