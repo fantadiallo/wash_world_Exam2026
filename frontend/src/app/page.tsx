@@ -1,9 +1,13 @@
-import Layout from "./layout";
+import Navigation from '@/src/components/navigation/Navigation';
+ 
 
 export default function Home() {
   return (
-    <Layout>
-      
-    </Layout>
+    <>
+      <Navigation />
+      <div className="px-6">
+        {/* page content */}
+      </div>
+    </>
   );
 }
