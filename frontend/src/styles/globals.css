@@ -1,26 +1,86 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+
+:root
+{
+    /* FONTS */
+    --font-primary: "Gilroy", sans-serif;
+
+    /* COLORS */
+
+    /* Primary */
+    --brand-green-white-bg: #06c167;
+    --brand-green-dark-bg: #0ce578;
+    --solid-black: #000;
+    --solid-white: #fff;
+
+    /* Secondary */
+    --splash-orange: #ff6b06;
+    --gray-eighty: #333;
+    --gray-sixty: #666;
+    --gray-ten: #e5e5e5;
+    --gray-five: #f7f7f7;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+
+/* Medium */
+@font-face
+{
+    font-family: "Gilroy";
+    src: url("/fonts/gilroy/Gilroy-Medium.woff2") format("woff2");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Regular */
+@font-face
+{   
+    font-family: "Gilroy";
+    src: url("/fonts/gilroy/Gilroy-Regular.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Medium */
+@font-face
+{
+    font-family: "Gilroy";
+    src: url("/fonts/gilroy/Gilroy-Medium.woff2") format("woff2");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Bold */
+@font-face
+{
+    font-family: "Gilroy";
+    src: url("/fonts/gilroy/Gilroy-Bold.woff2") format("woff2");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Heavy */
+@font-face
+{
+    font-family: "Gilroy";
+    src: url("/fonts/gilroy/Gilroy-Heavy.woff2") format("woff2");
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
+}
+
+@layer base {
+  h1, h2, h3, h4, h5, h6 {
+    font-family: "Gilroy", sans-serif;
+    font-weight: 700;
   }
-}
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  p {
+    font-family: "Gilroy", sans-serif;
+    font-weight: 500;
+  }
 }
