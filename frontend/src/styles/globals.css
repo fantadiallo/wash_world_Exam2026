@@ -43,12 +43,12 @@
     font-display: swap;
 }
 
-/* Medium */
+/* Light */
 @font-face
 {
     font-family: "Gilroy";
-    src: url("/fonts/gilroy/Gilroy-Medium.woff2") format("woff2");
-    font-weight: 500;
+    src: url("/fonts/gilroy/Gilroy-Light.woff2") format("woff2");
+    font-weight: 300;
     font-style: normal;
     font-display: swap;
 }

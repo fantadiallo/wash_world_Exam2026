@@ -10,7 +10,6 @@ import Link from 'next/link'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 
-
 const links: NavLink[] = [
   { text: 'Hjem', href: '/' },
   { text: 'Medlemskab', href: '/membership' },
