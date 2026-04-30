@@ -1,4 +1,5 @@
 import Navigation from '@/src/components/navigation/Navigation';
+import ImageSlider from '../components/slider/ImageSlider';
  
 
 export default function Home() {
@@ -7,9 +8,8 @@ export default function Home() {
   return (
     <>
       <Navigation />
-      <div className="px-6">
-        <h2>Hey</h2>
-      </div>
+    
+        <ImageSlider />
     </>
   );
 }

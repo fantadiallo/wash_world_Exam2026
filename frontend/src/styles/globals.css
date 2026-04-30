@@ -74,12 +74,12 @@
 }
 
 @layer base {
-  h1, h2, h3, h4, h5, h6 {
+  h1, h2, h3, h4, h5, h6, button, a, small {
     font-family: "Gilroy", sans-serif;
     font-weight: 700;
   }
 
-  p {
+  p, .slide-counter-container {
     font-family: "Gilroy", sans-serif;
     font-weight: 500;
   }
