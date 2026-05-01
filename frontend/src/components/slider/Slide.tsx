@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import Overlay from '@/src/overlay/Overlay'
+import Overlay from '../overlay/Overlay'
 
 export default function Slide({
     id,

@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 export default function Layout({ children }) {
   return (
     <html lang="en" className="h-full antialiased">
-      <body className="min-h-screen flex flex-col">
+      <body className="min-h-screen flex flex-col bg-(--gray-eighty)">
         <main className="min-h-screen">
           {children}
         </main>
