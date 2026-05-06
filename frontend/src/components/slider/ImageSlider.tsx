@@ -5,8 +5,11 @@ import Button from '../buttons/Button'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft, faChevronRight, faMapMarkerAlt, faCrown, faPumpSoap, faCreditCard, faLinkSlash} from '@fortawesome/free-solid-svg-icons'
 import { SlideProps } from '@/src/types/slide'
+import CardsContainer from '../containers/CardsContainer'
+import LocationCard from '../cards/LocationCard'
 import Slide from './Slide'
 import SlideCounter from './SlideCounter'
+import locations from '@/src/app/map_frontend_test_data/locations'
 
 const slides: SlideProps[] = [
     {
@@ -56,7 +59,16 @@ const slides: SlideProps[] = [
         imageSrc: '/images/slider_images/washworld.jpg',
         imageAlt: 'washworld',
         children: (
-            <h2 className="text-white">Location search goes here</h2>
+            <CardsContainer>
+                {
+                    locations.length > 0 ?
+                        locations.map((location, index) => (
+                            <LocationCard key={index} {...location} />
+                        )) : (
+                            ''
+                        )
+                }
+            </CardsContainer>
         )
     },
 ]
