@@ -6,6 +6,7 @@ type MembershipCardProps = {
   membership: Membership;
 };
 
+
 export default function MembershipCard({ membership }: MembershipCardProps) {
   return (
     <Card className="bg-white text-black text-center">
