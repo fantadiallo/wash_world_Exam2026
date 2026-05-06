@@ -100,7 +100,9 @@ export default function RegisterForm() {
         />
       </div>
 
-      <Button
+      <Button 
+        as="link"
+        href="/login"
         text="Opret konto"
         variant="primary"
         className="w-full justify-center text-xl py-4"
