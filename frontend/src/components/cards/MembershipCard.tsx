@@ -6,11 +6,10 @@ type MembershipCardProps = {
   membership: Membership;
 };
 
-
 export default function MembershipCard({ membership }: MembershipCardProps) {
   return (
-    <Card className="bg-white text-black text-center">
-      <h3 className="text-[#06c167] text-xl font-bold uppercase">
+    <Card className="w-full max-w-[280px] bg-(--solid-white) text-(--solid-black) text-center px-6 py-8 mx-auto">
+      <h3 className="text-(--brand-green-white-bg) text-xl font-bold uppercase">
         {membership.name}
       </h3>
 
@@ -22,18 +21,20 @@ export default function MembershipCard({ membership }: MembershipCardProps) {
         {membership.description}
       </p>
 
-      {/* 
-<ul className="bg-gray-300 min-h-32 my-6 flex flex-col items-center justify-center gap-2 font-bold text-sm">
-  {membership.features?.map((feature) => (
-    <li key={feature}>{feature}</li>
-  ))}
-</ul>
-*/}
-<div className="bg-gray-300 min-h-32 my-6 flex items-center justify-center font-bold text-sm">
-  Items go here
-</div>
+       <ul className="bg-(--gray-ten) min-h-32 my-6 p-4 flex flex-col justify-center gap-3 text-sm text-left">
+         {membership.features.map((feature) => (
+          <li key={feature} className="flex items-center gap-2">
+            <span className="text-(--brand-green-white-bg)">✓</span>
+            {feature}
+          </li>
+        ))}
+      </ul>
 
-      <Button text="Bliv medlem" variant="primary" className="mx-auto" />
+      <Button
+        text="Bliv medlem"
+        variant="primary"
+        className="mx-auto"
+      />
     </Card>
   );
 }
