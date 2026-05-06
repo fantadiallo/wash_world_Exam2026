@@ -1,13 +1,19 @@
 import type { ReactNode } from "react";
 
-type CardProps = {
-  children: ReactNode;
-  className?: string;
-};
+import { CardProps } from "@/src/types/card";
 
-export default function Card({ children, className = "" }: CardProps) {
+const variants = {
+  location_card: 'bg-(--gray-eighty) w-full min-w-[300px] px-4 py-2 rounded-sm border-2 border-(--brand-green-white-bg)',
+}
+
+
+export default function Card({
+  children,
+  className = "",
+  variant = "location_card", 
+}: CardProps) {
   return (
-    <article className={`${className}`}>
+    <article className={`${variants[variant]} ${className}`}>
       {children}
     </article>
   );

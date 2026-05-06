@@ -4,7 +4,8 @@ export type ButtonProps = {
     text?: string
     children?: React.ReactNode
     className?: string
-    variant?: 'default' | 'primary' | 'secondary' | 'slide_control'
+    variant?: 'default' | 'primary' | 'secondary' | 'slide_control' | 'location_card',
     as?: 'button' | 'link'
     href?: string
+    target?: string,
 }

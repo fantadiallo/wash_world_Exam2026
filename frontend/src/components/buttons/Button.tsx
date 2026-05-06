@@ -6,7 +6,8 @@ import { ButtonProps } from '@/src/types/button'
 const variants = {
     primary: 'flex items-center gap-2 bg-(--brand-green-dark-bg) text-(--solid-white) px-3 py-2 rounded-sm transition duration-150 ease-in hover:bg-transparent hover:outline-2 hover:outline-white',
     secondary: 'flex items-center gap-2 outline-2 outline-(--solid-white) text-(--solid-white) px-3 py-2 rounded-sm transition duration-150 ease-in hover:bg-(--brand-green-dark-bg) hover:outline-none',
-    slide_control: 'text-xl text-(--solid-white) cursor-pointer outline-2 outline-(--solid-white) rounded-full h-[30px] w-[30px] transition duration-150 ease-in hover:bg-(--brand-green-dark-bg) hover:outline-0'
+    slide_control: 'text-xl text-(--solid-white) cursor-pointer outline-2 outline-(--solid-white) rounded-full h-[30px] w-[30px] transition duration-150 ease-in hover:bg-(--brand-green-dark-bg) hover:outline-0',
+    location_card: 'font-regular text-(--brand-green-dark-bg) hover:border-b-1 hover:border-(--brand-green-dark-bg) whitespace-nowrap'
 }
 
 export default function Button({
@@ -17,7 +18,8 @@ export default function Button({
     className = '',
     variant = '',
     as = 'button',
-    href
+    href,
+    target,
 }: ButtonProps)
 {
     const styles = `${variants[variant]} ${className}`
@@ -25,7 +27,7 @@ export default function Button({
     // LINK VERSION
     if (as === 'link' && href) {
         return (
-            <Link id={id} href={href} className={styles}>
+            <Link id={id} href={href} target={target} className={styles}>
                 {children}
                 {text}
             </Link>
