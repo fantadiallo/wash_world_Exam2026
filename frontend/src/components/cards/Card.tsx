@@ -7,7 +7,7 @@ type CardProps = {
 
 export default function Card({ children, className = "" }: CardProps) {
   return (
-    <article className={`border border-[#444] p-4 ${className}`}>
+    <article className={`${className}`}>
       {children}
     </article>
   );
