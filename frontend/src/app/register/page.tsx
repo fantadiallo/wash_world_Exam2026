@@ -1,14 +1,15 @@
 import LoginForm from "@/src/components/auth/LoginForm";
 import Navigation from "@/src/components/navigation/Navigation";
+import Layout from "../layout";
+import PageContainer from "@/src/components/containers/PageContainer";
 
 export default function Register() {
   return (
-    <>
+    <Layout>
       <Navigation />
-
-      <main className="min-h-screen flex items-center justify-center">
+      <PageContainer>
         <LoginForm />
-      </main>
-    </>
+      </PageContainer>
+    </Layout>
   );
 }

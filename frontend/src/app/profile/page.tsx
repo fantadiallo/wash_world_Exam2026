@@ -1,13 +1,15 @@
 import Layout from "@/src/app/layout"
 import Navigation from "@/src/components/navigation/Navigation"
+import PageContainer from "@/src/components/containers/PageContainer"
 
 export default function Profile()
 {
   return (
     <Layout>
-      <div className="mt-5 ml-5">
-        <Navigation />
-      </div>
+      <Navigation />
+      <PageContainer>
+        {/* profile content goes here */}
+      </PageContainer>
     </Layout>
   )
 }
