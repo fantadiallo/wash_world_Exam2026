@@ -8,4 +8,5 @@ export type ButtonProps = {
     as?: 'button' | 'link'
     href?: string
     target?: string,
+    rel?: string
 }

@@ -15,10 +15,11 @@ export type CardProps =
 // Location Card
 export type LocationCardProps =
 {
-    address: string,
+    street: string,
     city: string,
     distance: string,
-    geoCode: [number, number]
+    lat: string,
+    long: string,
 }
 
 

@@ -9,7 +9,8 @@ import CardsContainer from '../containers/CardsContainer'
 import LocationCard from '../cards/LocationCard'
 import Slide from './Slide'
 import SlideCounter from './SlideCounter'
-import locations from '@/src/app/map_frontend_test_data/locations'
+import mapLocations from '@/src/map_data/map_locations'
+
 
 const slides: SlideProps[] = [
     {
@@ -61,8 +62,8 @@ const slides: SlideProps[] = [
         children: (
             <CardsContainer>
                 {
-                    locations.length > 0 ?
-                        locations.map((location, index) => (
+                    mapLocations.length > 0 ?
+                        mapLocations.map((location, index) => (
                             <LocationCard key={index} {...location} />
                         )) : (
                             ''
