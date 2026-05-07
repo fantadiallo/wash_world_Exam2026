@@ -59,7 +59,7 @@ export default function Locations()
                     </CardsContainer>
                 </div>
 
-                <div className="w-full h-[500px]">
+                <div className="w-full h-[400px]">
                     <Map locations={locationsWithDistance} currentUserLocation={currentUserLocation} />
                 </div>
             </PageContainer>
