@@ -35,6 +35,14 @@ export default function Locations()
         <>
             <Navigation />
             <PageContainer>
+                <header className="text-4xl leading-10">
+                    <h1 className="text-(--solid-white)">
+                        Find din nærmeste
+                        <br />
+                        <span className="text-(--brand-green-dark-bg)">Wash World</span>
+                    </h1>
+                </header>
+
                 <div className="container nearest-wash-worlds-container">
                     <header className="text-(--brand-green-dark-bg) uppercase text-lg mb-2">
                         <h3>Vaskehaller nær dig</h3>

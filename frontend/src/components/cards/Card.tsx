@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import { CardProps } from "@/src/types/card";
 
 const variants = {
-  location_card: 'bg-(--gray-eighty) w-full min-w-[300px] px-4 py-2 rounded-sm border-2 border-(--brand-green-white-bg)',
+  location_card: 'bg-(--gray-eighty) min-w-[300px] w-full px-4 py-2 rounded-sm border-2 border-(--brand-green-white-bg)',
 }
 
 

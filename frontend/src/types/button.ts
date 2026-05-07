@@ -10,3 +10,14 @@ export type ButtonProps = {
     target?: string,
     rel?: string
 }
+
+export type Filter =
+{
+    text: string,
+    id: string,
+}
+
+export type FilterLocationButtonProps = ButtonProps &
+{
+    filters: Filter[]
+}

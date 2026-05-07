@@ -1,4 +1,5 @@
 'use client'
+import { useState } from 'react';
 import MapLocationsContainer from './MapLocationsContainer'
 import mapLocations from '../../../src/app/map_data/locations'
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
@@ -7,16 +8,43 @@ import Button from '../buttons/Button'
 import { mapMarkers } from '@/src/map_data/map_icon';
 import MarkerClusterGroup from 'react-leaflet-cluster'
 import CenterMap from './CenterMap';
+import FilterLocationsButton from '../buttons/FilterLocationsButton'
+import FilterLocationButtonsContainer from '../containers/FilterLocationButtonsContainer';
 
+const filters: Filter[] = [
+    {id: 'all', text: 'Alle typer'},
+    {id: 'car_wash', text: 'Vaskehaller'},
+    {id: 'self_car_wash', text: 'Vask selv'},
+]
 
 
 export default function Map({ view, location, locations = mapLocations, currentUserLocation}: MapProps)
 {
+    
+
     return (
         <MapContainer
-            className="max-w-full"
+            className="max-w-full relative"
             zoom={13}
         >
+        
+        <FilterLocationButtonsContainer>
+            {
+                filters.length > 0 ?
+                    filters.map((filter) => (
+                        <FilterLocationsButton
+                            key={filter.id}
+                            
+                        >
+                            {filter.text}
+                        </FilterLocationsButton>
+                    )) : (
+                        <p className="text-(--solid-black)">Ingen filtre tilgængelige</p>
+                    )
+            }
+            
+        </FilterLocationButtonsContainer>
+        
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
             {/* Center Map to User Location */}
