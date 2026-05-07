@@ -24,7 +24,8 @@ export default function Map({ view, location, locations = mapLocations, currentU
 
     return (
         <MapContainer
-            className="max-w-full relative"
+            className="max-w-full"
+            center={[56.26, 9.50]} // Denmark's center, or use currentUserLocation
             zoom={13}
         >
         

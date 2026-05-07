@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function Layout({ children }) {
   return (
     <html lang="en" className="h-full antialiased">
-      <body className="min-h-screen flex flex-col bg-(--gray-eighty)">
+      <body  className="min-h-screen flex flex-col bg-(--gray-eighty)" suppressHydrationWarning>
         <main className="min-h-screen">
           {children}
         </main>
