@@ -60,6 +60,11 @@ export default function Locations()
                 </div>
 
                 <div className="w-full h-[400px]">
+                    <header>
+                        <h2 className="text-(--brand-green-dark-bg) uppercase text-lg mb-2">
+                            Oversigt over vaskehaller
+                        </h2>
+                    </header>
                     <Map locations={locationsWithDistance} currentUserLocation={currentUserLocation} />
                 </div>
             </PageContainer>
