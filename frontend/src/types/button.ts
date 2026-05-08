@@ -17,7 +17,9 @@ export type Filter =
     id: string,
 }
 
-export type FilterLocationButtonProps = ButtonProps &
+export type FilterLocationButtonProps = ButtonProps & 
 {
-    filters: Filter[]
+    onFilterChange: (value: string) => void
+    filterValue: string,
+    isActive?: boolean
 }

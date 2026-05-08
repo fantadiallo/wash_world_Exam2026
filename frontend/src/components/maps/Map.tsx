@@ -12,7 +12,6 @@ import FilterLocationsButton from '../buttons/FilterLocationsButton'
 import FilterLocationButtonsContainer from '../containers/FilterLocationButtonsContainer';
 
 const filters: Filter[] = [
-    {id: 'all', text: 'Alle typer'},
     {id: 'car_wash', text: 'Vaskehaller'},
     {id: 'self_car_wash', text: 'Vask selv'},
 ]
@@ -21,6 +20,16 @@ const filters: Filter[] = [
 export default function Map({ view, location, locations = mapLocations, currentUserLocation}: MapProps)
 {
     
+    const [activeFilter, setActiveFilter] = useState("car_wash")
+
+    const filteredLocations = locations.filter((location) => {
+        if(activeFilter === 'self_car_wash')
+        {
+            return location.hasSelfCarWash === true
+        }
+
+        return true
+    })
 
     return (
         <MapContainer
@@ -35,6 +44,9 @@ export default function Map({ view, location, locations = mapLocations, currentU
                     filters.map((filter) => (
                         <FilterLocationsButton
                             key={filter.id}
+                            filterValue={filter.id}
+                            isActive={activeFilter === filter.id}
+                            onFilterChange={setActiveFilter}
                             
                         >
                             {filter.text}
@@ -56,12 +68,13 @@ export default function Map({ view, location, locations = mapLocations, currentU
             <MapLocationsContainer>
                 <MarkerClusterGroup chunkedLoading>
                     {
-                        locations.length > 0 ?
-                            locations.map((mapLocation, index) => (
+                        filteredLocations.length > 0 ?
+                            filteredLocations.map((mapLocation, index) => (
                                 <Marker
                                     key={`${mapLocation.id}-${mapLocation.distance}`}
                                     position={[mapLocation.lat, mapLocation.lng]}
                                     icon={mapMarkers}
+                                    data-has-self-car-wash={mapLocation.hasSelfCarWash}
                                 >
                                     <Popup className="rounded-md w-fit">
                                         <div
