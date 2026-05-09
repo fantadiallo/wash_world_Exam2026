@@ -9,7 +9,8 @@ import { memberships } from "@/src/services/memberships"
 import { faCalendar } from "@fortawesome/free-regular-svg-icons"
 import { formatDate, formatTimestamp} from "../utils/formatters"
 import Button from "@/src/components/buttons/Button"
-
+import Heading from "@/src/components/headings/Heading"
+import Section from "@/src/components/sections/Section"
 
 export default function Profile()
 {
@@ -22,9 +23,8 @@ export default function Profile()
           <PageContainer>
               <Navigation />
               {/* Section: Hero */}
-              <section className="profile-hero-container text-(--solid-white)">
-                <div className="flex gap-4 items-center">
-                    <Image
+              <Section variant="profile_hero">
+                  <Image
                       className="profile-image h-[90px] w-[90px] object-cover rounded-full"
                       height={100}
                       width={100}
@@ -32,40 +32,46 @@ export default function Profile()
                       alt="profile image"
                     />
                     <div>
-                      <header className="text-2xl ">
-                        <h1>Velkommen, Martin!</h1>
-                      </header>
-                      <p className="text-sm">
-                        martin@gmail.com
-                      </p>
+                      <Heading>
+                        <h1 className="text-2xl">Velkommen, Martin!</h1>
+                        <p className="text-sm">
+                          martin@gmail.com
+                        </p>
+                      </Heading>
                   </div>
-                </div>
-              </section>
+              </Section>
+        
               {/* Section: Information */}
-              <section className="flex flex-col items-center gap-8 mt-4">
-                  <Card className="flex justify-between items-center">
+              <Section variant="profile_information">
+                <Card className="flex justify-between items-center">
                     <div>
-                      <header className="text-(--brand-green-dark-bg) uppercase">
-                        <h3>Dit medlemskab</h3>
-                        <h4 className="text-(--splash-orange) mt-1 membership-type text-2xl">
+                      <Heading variant="dashboard_card_topic_heading">
+                          Dit medlemskab
+                      </Heading>
+                      <Heading variant="membership_status_and_date_heading">
                           {membership?.name}
-                        </h4>
-                      </header>
-                      <p className="text-sm membership-perks text-(--solid-white) mt-2">
-                        {membership?.perks}
-                      </p>
+                      </Heading>
+                        <ul className="text-(--solid-white) mt-4 space-y-1 membership-type text-sm">
+                          <Heading>
+                            <h4>Fordele:</h4>
+                          </Heading>
+                          {membership?.features?.map((feature, index) => (
+                            <li className="font-normal" key={index}>{feature}</li>
+                          ))}
+                        </ul>
                     </div>
                     
                     <FontAwesomeIcon icon={membership?.icon} className="text-5xl text-(--splash-orange)" />
                   </Card>
                   <Card className="flex justify-between items-center">
                     <div>
-                      <header className="text-(--brand-green-dark-bg) uppercase">
-                        <h3>Seneste vask</h3>
-                        <h4 className="text-(--splash-orange) mt-2 membership-type text-2xl">
+                      <Heading variant="dashboard_card_topic_heading">
+                          Seneste vask
+                      </Heading>
+                      <Heading variant="membership_status_and_date_heading">
                           {formatDate({ date: dateObj, dateTimeFormat: 'da-DK', dayFormat: 'numeric', monthFormat: 'long' })}
-                        </h4>
-                      </header>
+                      </Heading>
+                      
                       <p className="text-sm membership-perks text-(--solid-white) mt-2">
                         Klokken <span className="time">{formatTimestamp({ time: dateObj, dateTimeFormat: 'da-DK', hourFormat: '2-digit', minuteFormat: '2-digit' })}</span>
                       </p>
@@ -82,14 +88,13 @@ export default function Profile()
                       />
                     </div>
                   </Card>
-              </section>
+              </Section>
 
               {/* Sign Out */}
-              <section className="sign-out">
-                <Button variant="auth">
-                  Log ud
-                </Button>
-              </section>
+              <Button variant="auth">
+                Log ud
+              </Button>
+              
           </PageContainer>
         </Layout>
       )

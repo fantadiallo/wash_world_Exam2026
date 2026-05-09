@@ -3,11 +3,9 @@
 import { useState } from "react";
 import Button from "../buttons/Button";
 import type { LoginFormData } from "../../types/login";
+import Heading from "../headings/Heading";
 
-/**
- * LoginForm component
- * Handles user login input and submission.
- */
+
 export default function LoginForm() {
   const [formData, setFormData] = useState<LoginFormData>({
     email: "",
@@ -36,50 +34,51 @@ export default function LoginForm() {
   }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="bg-[#333] text-white px-8 py-12 w-full max-w-md"
-    >
-      <h1 className="text-4xl font-bold mb-2">Log ind</h1>
-      <p className="text-gray-400 mb-8">velkommen tilbage!</p>
+    <div className="flex flex-col gap-3 mt-[125px] h-fit items-center">
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col h-fit rounded-md bg-white text-white p-8 min-w-[300px] w-full max-w-md"
+      >
+      
+      <Heading variant="form_heading">
+          Log ind
+      </Heading>
 
       <div className="mb-6">
-        <label className="block mb-2 font-bold">E-mail</label>
+        <label className="block mb-2 font-bold text-(--brand-green-white-bg)">E-mail</label>
         <input
           type="email"
           name="email"
-          placeholder="indtast din e-mail"
+          placeholder="Indtast e-mail"
           value={formData.email}
           onChange={handleChange}
-          className="w-full bg-[#1c1c1c] border border-[#555] px-4 py-4 text-white outline-none focus:border-[#06c167]"
+          className="rounded-md w-full bg-(--gray-eighty) p-4 transition-outline duration-150 ease-in focus:ring-0 focus:outline-2 focus:outline-(--brand-green-white-bg)"
         />
       </div>
 
       <div className="mb-3">
-        <label className="block mb-2 font-bold">Adgangs kode</label>
+        <label className="block mb-2 font-bold text-(--brand-green-white-bg)">Adgangskode</label>
         <input
           type="password"
           name="password"
+          placeholder="Indtast adgangskode"
           value={formData.password}
           onChange={handleChange}
-          className="w-full bg-[#1c1c1c] border border-[#555] px-4 py-4 text-white outline-none focus:border-[#06c167]"
+          className="rounded-md w-full bg-(--gray-eighty) p-4 transition-outline duration-150 ease-in focus:ring-0 focus:outline-2 focus:outline-(--brand-green-white-bg)"
         />
+        
       </div>
-
-      <button
-        type="button"
-        className="block ml-auto text-[#06c167] mb-6 hover:text-[#ff6b06]"
-      >
-        Glemt adgangskode?
-      </button>
 
       <Button
         text="Log ind"
-        variant="primary"
-        className="w-full justify-center text-xl py-4"
+        variant="submit"
       />
-
-      <p className="text-center mt-6 text-xl underline">Bliv medlem?</p>
     </form>
+
+      <p className="text-(--solid-white) text-center">
+        Har du <Button variant="text" as="link" href="#" text="glemt din adgangskode?" />
+      </p>
+    </div>
+   
   );
 }

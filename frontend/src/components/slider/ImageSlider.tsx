@@ -1,5 +1,6 @@
 'use client'
 
+import locationsData from '@/src/app/map_data/locations'
 import { useState } from 'react'
 import Button from '../buttons/Button'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -9,10 +10,17 @@ import CardsContainer from '../containers/CardsContainer'
 import LocationCard from '../cards/LocationCard'
 import Slide from './Slide'
 import SlideCounter from './SlideCounter'
-import mapLocations from '@/src/map_data/map_locations'
+import useLocationsWithDistance from '@/src/hooks/useLocationsWithDistance'
 
 
-const slides: SlideProps[] = [
+
+
+export default function ImageSlider()
+{
+    const locations = useLocationsWithDistance(locationsData)
+    const [currentSlideIndex, setCurrentSlideIndex] = useState(0)
+
+    const slides: SlideProps[] = [
     {
         id: '1',
         slideTopicText: 'BILVASK',
@@ -22,13 +30,13 @@ const slides: SlideProps[] = [
         imageAlt: 'washworld',
         children: (
             <div className="flex flex-col gap-4">
-               <Button as="link" href="/locations" variant="primary">
-                   <FontAwesomeIcon icon={faMapMarkerAlt} /> <span>Find vaskehaller</span>
-               </Button>
+            <Button as="link" href="/locations" variant="primary">
+                <FontAwesomeIcon icon={faMapMarkerAlt} /> <span>Find vaskehaller</span>
+            </Button>
                 <Button as="link" href="/locations" variant="secondary">
-                   <FontAwesomeIcon icon={faCrown} /> <span>Se medlemskaber</span>
-               </Button>
-           </div>
+                <FontAwesomeIcon icon={faCrown} /> <span>Se medlemskaber</span>
+            </Button>
+        </div>
         )
     },
     {
@@ -52,7 +60,7 @@ const slides: SlideProps[] = [
             </ul>
         )
     },
-     {
+    {
         id: '3',
         slideTopicText: 'Vaskehal',
         slideHeaderText: 'Altid en ren bil indenfor rækkevidde',
@@ -62,8 +70,8 @@ const slides: SlideProps[] = [
         children: (
             <CardsContainer>
                 {
-                    mapLocations.length > 0 ?
-                        mapLocations.map((location, index) => (
+                    locations.length > 0 ?
+                        locations.map((location, index) => (
                             <LocationCard key={index} {...location} />
                         )) : (
                             ''
@@ -72,11 +80,7 @@ const slides: SlideProps[] = [
             </CardsContainer>
         )
     },
-]
-
-export default function ImageSlider()
-{
-    const [currentSlideIndex, setCurrentSlideIndex] = useState(0)
+    ]
 
     return (
         <div className="relative slides-container h-[calc(100vh-4rem)] w-screen overflow-hidden">

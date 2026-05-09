@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import Overlay from '../overlay/Overlay'
+import Heading from '../headings/Heading'
 
 export default function Slide({
     id,
@@ -31,20 +32,20 @@ export default function Slide({
 
             {/* CONTENT */}
             <div className="relative h-full flex flex-col">
-
-                <header className="mx-10 mt-12">
-                    <p className="font-bold slide-topic text-lg text-(--brand-green-dark-bg) tracking-widest uppercase">
+                <div className="mt-10 mx-12">
+                    <Heading variant="slide_topic_heading">
                         {slideTopicText}
-                    </p>
+                    </Heading>
 
-                    <h1 className="text-(--solid-white) text-2xl leading-tight mb-2">
+                    <Heading variant="slide_main_heading">
                         {slideHeaderText}
-                    </h1>
+                    </Heading>
 
-                    <small className="text-sm font-normal text-(--solid-white)">
+                    <small className="text-[15px] text-(--solid-white)">
                         {slideSubheaderText}
                     </small>
-                </header>
+                </div>
+                    
 
                 {/* CHILDREN WRAPPER */}
                 <div className="mx-10 flex flex-1 relative top-[50%] -translate-y-[50%]">

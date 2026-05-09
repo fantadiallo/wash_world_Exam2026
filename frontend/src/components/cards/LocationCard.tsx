@@ -3,6 +3,7 @@ import Button from "../buttons/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
 import { LocationCardProps } from "@/src/types/card";
+import Heading from "../headings/Heading"
 
 export default function LocationCard({street, city, distance, lat, lng}: LocationCardProps)
 {
@@ -17,9 +18,9 @@ export default function LocationCard({street, city, distance, lat, lng}: Locatio
 
 
                     <div className="flex flex-col">
-                        <header className="text-[var(--brand-green-dark-bg)]">
-                            <h2 className="text-xl">{street}</h2>
-                        </header>
+                        <Heading variant="location_card_heading">
+                            {street}
+                        </Heading>
                         <p className="flex items-center gap-2 text-sm text-[var(--gray-ten)]">
                             <span className="city">{city}</span>
                             <span className="text-[var(--brand-green-dark-bg)]">•</span>

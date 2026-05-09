@@ -10,6 +10,8 @@ import MarkerClusterGroup from 'react-leaflet-cluster'
 import CenterMap from './CenterMap';
 import FilterLocationsButton from '../buttons/FilterLocationsButton'
 import FilterLocationButtonsContainer from '../containers/FilterLocationButtonsContainer';
+import Heading from '@/src/components/headings/Heading'
+import Paragraph from '../paragraphs/Paragraph';
 
 const filters: Filter[] = [
     {id: 'car_wash', text: 'Vaskehaller'},
@@ -84,11 +86,10 @@ export default function Map({ view, location, locations = mapLocations, currentU
                                             <div className="flex flex-col justify-between h-full min-h-[80px]">
 
                                                 <div className="popup-address-container flex flex-col gap-1">
-                                                    <header className="address-header">
-                                                        <h2 className="text-(--brand-green-white-bg)">
-                                                            {mapLocation.street}
-                                                        </h2>
-                                                    </header>
+                                                    <Heading variant="address_heading">
+                                                        {mapLocation.street}
+                                                    </Heading>
+                                                  
 
                                                     <p className="flex gap-1">
                                                         <span className="zip-code">{mapLocation.zip_code}</span>
@@ -115,10 +116,10 @@ export default function Map({ view, location, locations = mapLocations, currentU
 
                                             <div className="popup-opening-hours-container flex flex-col items-start gap-4 whitespace-nowrap">
                                                 <div>
-                                                    <header>
-                                                        <h3 className="font-bold text-(--brand-green-white-bg)">Åbningstider:</h3>
-                                                    </header>
-                                                    <p>{mapLocation.opening_hours}</p>
+                                                    <Heading variant="section_sub_heading_green">
+                                                        Åbningstider:
+                                                    </Heading>
+                                                    <Paragraph variant="opening_hours">{mapLocation.opening_hours}</Paragraph>
                                                 </div>
 
                                                 <div>

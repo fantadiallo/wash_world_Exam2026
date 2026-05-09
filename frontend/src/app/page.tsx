@@ -1,13 +1,13 @@
-import Header from '@/src/components/layout/Header'
+import Navigation from '../components/navigation/Navigation';
+
 import Footer from '@/src/components/layout/Footer'
-//import Navigation from '@/src/components/navigation/Navigation';
 import ImageSlider from '../components/slider/ImageSlider';
  
 
 export default function Home() {
   return (
     <>
-      <Header />
+      <Navigation />
       <ImageSlider />
       <Footer
         address="Dynamovej 4, 2860 Søborg"

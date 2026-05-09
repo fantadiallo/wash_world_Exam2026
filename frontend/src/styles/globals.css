@@ -74,7 +74,7 @@
 }
 
 @layer base {
-  h1, h2, h3, h4, h5, h6, button, a, small {
+  header, h1, h2, h3, h4, h5, h6, button, a, small:has(:not(.mx-10.mt-12)) {
     font-family: "Gilroy", sans-serif;
     font-weight: 700;
   }
@@ -133,7 +133,7 @@
     width: fit-content !important;
 }
 
-.leaflet-popup-content p, small {
+.leaflet-popup-content p, .leaflet-popup-content small {
     font-size: revert;
 }
 

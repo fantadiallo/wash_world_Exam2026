@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Button from "../buttons/Button";
 import type { RegisterFormData } from "../../types/register";
+import Heading from "../headings/Heading";
 
 /**
  * RegisterForm component
@@ -45,75 +46,79 @@ export default function RegisterForm() {
   }
 
   return (
+    <div className="grid place-content-center">
     <form
       onSubmit={handleSubmit}
-      className="bg-[#333] text-white px-8 py-12 w-full max-w-md"
+      className="flex flex-col h-fit rounded-md bg-white text-white p-8 min-w-[300px] w-full max-w-md"
     >
-      <h1 className="text-4xl font-bold mb-2">Opret bruger</h1>
-      <p className="text-gray-300 mb-8">Bliv en del av Wash World</p>
-
+      <Heading variant="form_heading">
+          Opret bruger
+      </Heading>
+      
+      <p className="mb-4 text-(--gray-sixty)">Bliv en del af Wash World</p>
+      
+     
       <div className="mb-6">
-        <label className="block mb-2 font-bold">Fulde navn</label>
+        <label className="block mb-2 font-bold text-(--brand-green-white-bg)">Fulde navn</label>
         <input
           type="text"
           name="name"
-          placeholder="indtast dit navn"
+          placeholder="Indtast fulde navn"
           value={formData.name}
           onChange={handleChange}
-          className="w-full bg-[#1c1c1c] border border-[#555] px-4 py-4 text-white outline-none focus:border-[#06c167]"
+          className="rounded-md w-full bg-(--gray-eighty) p-4 transition-outline duration-150 ease-in focus:ring-0 focus:outline-2 focus:outline-(--brand-green-white-bg)"
         />
       </div>
 
       <div className="mb-6">
-        <label className="block mb-2 font-bold">E-mail</label>
+        <label className="block mb-2 font-bold text-(--brand-green-white-bg)">E-mail</label>
         <input
           type="email"
           name="email"
-          placeholder="indtast din e-mail"
+          placeholder="Indtast e-mail"
           value={formData.email}
           onChange={handleChange}
-          className="w-full bg-[#1c1c1c] border border-[#555] px-4 py-4 text-white outline-none focus:border-[#06c167]"
+          className="rounded-md w-full bg-(--gray-eighty) p-4 transition-outline duration-150 ease-in focus:ring-0 focus:outline-2 focus:outline-(--brand-green-white-bg)"
         />
       </div>
 
       <div className="mb-6">
-        <label className="block mb-2 font-bold">Adgangskode</label>
+        <label className="block mb-2 font-bold text-(--brand-green-white-bg)">Adgangskode</label>
         <input
           type="password"
           name="password"
-          placeholder="opret en adgangskode"
+          placeholder="Indtast adgangskode"
           value={formData.password}
           onChange={handleChange}
-          className="w-full bg-[#1c1c1c] border border-[#555] px-4 py-4 text-white outline-none focus:border-[#06c167]"
+          className="rounded-md w-full bg-(--gray-eighty) p-4 transition-outline duration-150 ease-in focus:ring-0 focus:outline-2 focus:outline-(--brand-green-white-bg)"
         />
       </div>
 
       <div className="mb-8">
-        <label className="block mb-2 font-bold">Gentag adgangskode</label>
+        <label className="block mb-2 font-bold text-(--brand-green-white-bg)">Gentag adgangskode</label>
         <input
           type="password"
           name="confirmPassword"
-          placeholder="Gentag din adgangskode"
+          placeholder="Gentag adgangskode"
           value={formData.confirmPassword}
           onChange={handleChange}
-          className="w-full bg-[#1c1c1c] border border-[#555] px-4 py-4 text-white outline-none focus:border-[#06c167]"
+          className="rounded-md w-full bg-(--gray-eighty) p-4 transition-outline duration-150 ease-in focus:ring-0 focus:outline-2 focus:outline-(--brand-green-white-bg)"
         />
       </div>
 
       <Button 
-        as="link"
-        href="/login"
         text="Opret konto"
-        variant="primary"
-        className="w-full justify-center text-xl py-4"
+        variant="submit"
       />
-
-      <p className="text-center mt-4">
-        Har du allerede en konto?{" "}
-        <span className="text-[#06c167] underline cursor-pointer">
-          Log ind
-        </span>
-      </p>
     </form>
+
+     <div>
+        <p className="text-(--solid-white) text-center mt-4">
+          Har du allerede en konto?{" "}
+          <Button as="link" href="/login" target="_blank" variant="text" text="Log ind"/>
+        </p>
+     </div>
+      
+    </div>
   );
 }
