@@ -12,7 +12,8 @@ import Heading from "../headings/Heading";
 export default function RegisterForm() {
   const [formData, setFormData] = useState<RegisterFormData>({
     name: "",
-    last_name: '',
+    last_name: "",
+    email: "",
     password: "",
     confirmPassword: "",
   });
@@ -47,90 +48,116 @@ export default function RegisterForm() {
 
   return (
     <div className="grid place-content-center">
-    <form
-      onSubmit={handleSubmit}
-      className="flex flex-col h-fit rounded-md bg-white text-white p-8 min-w-[300px] w-full max-w-md"
-    >
-      <Heading variant="form_heading">
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col h-fit rounded-md bg-white text-white p-8 min-w-[300px] w-full max-w-md"
+        method="POST"
+        action="/register-user"
+      >
+        <Heading variant="form_heading">
           Opret bruger
-      </Heading>
-      
-      <p className="mb-4 text-(--gray-sixty)">Bliv en del af Wash World</p>
-      
-     
-      <div className="mb-6">
-        <label className="block mb-2 font-bold text-(--brand-green-white-bg)">Fulde navn</label>
-        <input
-          type="text"
-          name="user_first_name"
-          placeholder="Indtast fornavn"
-          value={formData.name}
-          onChange={handleChange}
-          className="rounded-md w-full bg-(--gray-eighty) p-4 transition-outline duration-150 ease-in focus:ring-0 focus:outline-2 focus:outline-(--brand-green-white-bg)"
+        </Heading>
+
+        <p className="mb-4 text-(--gray-sixty)">
+          Bliv en del af Wash World
+        </p>
+
+        <div className="mb-6">
+          <label className="block mb-2 font-bold text-(--brand-green-white-bg)">
+            Fornavn
+          </label>
+
+          <input
+            type="text"
+            name="name"
+            placeholder="Indtast fornavn"
+            value={formData.name}
+            onChange={handleChange}
+            className="rounded-md w-full bg-(--gray-eighty) p-4 transition-outline duration-150 ease-in focus:ring-0 focus:outline-2 focus:outline-(--brand-green-white-bg)"
+          />
+        </div>
+
+        <div className="mb-6">
+          <label className="block mb-2 font-bold text-(--brand-green-white-bg)">
+            Efternavn
+          </label>
+
+          <input
+            type="text"
+            name="last_name"
+            placeholder="Indtast efternavn"
+            value={formData.last_name}
+            onChange={handleChange}
+            className="rounded-md w-full bg-(--gray-eighty) p-4 transition-outline duration-150 ease-in focus:ring-0 focus:outline-2 focus:outline-(--brand-green-white-bg)"
+          />
+        </div>
+
+        {/* Original E-mail field kept */}
+        <div className="mb-6">
+          <label className="block mb-2 font-bold text-(--brand-green-white-bg)">
+            E-mail
+          </label>
+
+          <input
+            type="email"
+            name="email"
+            placeholder="Indtast e-mail"
+            value={formData.email}
+            onChange={handleChange}
+            className="rounded-md w-full bg-(--gray-eighty) p-4 transition-outline duration-150 ease-in focus:ring-0 focus:outline-2 focus:outline-(--brand-green-white-bg)"
+          />
+        </div>
+
+        {/* Original password field kept */}
+        <div className="mb-8">
+          <label className="block mb-2 font-bold text-(--brand-green-white-bg)">
+            Adgangskode
+          </label>
+
+          <input
+            type="password"
+            name="password"
+            placeholder="Indtast adgangskode"
+            value={formData.password}
+            onChange={handleChange}
+            className="rounded-md w-full bg-(--gray-eighty) p-4 transition-outline duration-150 ease-in focus:ring-0 focus:outline-2 focus:outline-(--brand-green-white-bg)"
+          />
+        </div>
+
+        {/* Original confirm password field kept */}
+        <div className="mb-8">
+          <label className="block mb-2 font-bold text-(--brand-green-white-bg)">
+            Gentag adgangskode
+          </label>
+
+          <input
+            type="password"
+            name="confirmPassword"
+            placeholder="Gentag adgangskode"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            className="rounded-md w-full bg-(--gray-eighty) p-4 transition-outline duration-150 ease-in focus:ring-0 focus:outline-2 focus:outline-(--brand-green-white-bg)"
+          />
+        </div>
+
+        <Button
+          text="Opret konto"
+          variant="submit"
         />
-      </div>
+      </form>
 
-      <div className="mb-6">
-        <label className="block mb-2 font-bold text-(--brand-green-white-bg)">Fulde navn</label>
-        <input
-          type="text"
-          name="user_last_name"
-          placeholder="Indtast efternavn"
-          value={formData.name}
-          onChange={handleChange}
-          className="rounded-md w-full bg-(--gray-eighty) p-4 transition-outline duration-150 ease-in focus:ring-0 focus:outline-2 focus:outline-(--brand-green-white-bg)"
-        />
-      </div>
-
-      <div className="mb-6">
-        <label className="block mb-2 font-bold text-(--brand-green-white-bg)">E-mail</label>
-        <input
-          type="email"
-          name="user_email"
-          placeholder="Indtast e-mail"
-          value={formData.email}
-          onChange={handleChange}
-          className="rounded-md w-full bg-(--gray-eighty) p-4 transition-outline duration-150 ease-in focus:ring-0 focus:outline-2 focus:outline-(--brand-green-white-bg)"
-        />
-      </div>
-
-      <div className="mb-6">
-        <label className="block mb-2 font-bold text-(--brand-green-white-bg)">Adgangskode</label>
-        <input
-          type="password"
-          name="user_password"
-          placeholder="Indtast adgangskode"
-          value={formData.password}
-          onChange={handleChange}
-          className="rounded-md w-full bg-(--gray-eighty) p-4 transition-outline duration-150 ease-in focus:ring-0 focus:outline-2 focus:outline-(--brand-green-white-bg)"
-        />
-      </div>
-
-      <div className="mb-8">
-        <label className="block mb-2 font-bold text-(--brand-green-white-bg)">Gentag adgangskode</label>
-        <input
-          type="password"
-          name="confirm_password"
-          placeholder="Gentag adgangskode"
-          value={formData.confirmPassword}
-          onChange={handleChange}
-          className="rounded-md w-full bg-(--gray-eighty) p-4 transition-outline duration-150 ease-in focus:ring-0 focus:outline-2 focus:outline-(--brand-green-white-bg)"
-        />
-      </div>
-
-      <Button 
-        text="Opret konto"
-        variant="submit"
-      />
-    </form>
-
-     <div>
+      <div>
         <p className="text-(--solid-white) text-center mt-4">
           Har du allerede en konto?{" "}
-          <Button as="link" href="/login" target="_blank" variant="text" text="Log ind"/>
+          <Button
+            as="link"
+            href="/login"
+            target="_blank"
+            variant="text"
+            text="Log ind"
+          />
         </p>
-     </div>
-      
+      </div>
     </div>
   );
 }

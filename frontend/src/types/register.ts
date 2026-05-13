@@ -2,16 +2,18 @@
  * Data structure for register form inputs
  */
 export type RegisterFormData = {
-  /** Full name of the user */
+  // User first name
   name: string;
 
-  /** User email */
+  // User last name
+  last_name: string;
+
+  // User email
   email: string;
 
-  /** User password */
+  // User password
   password: string;
 
-  /** Password confirmation */
+  // User confirm password
   confirmPassword: string;
 };
-
