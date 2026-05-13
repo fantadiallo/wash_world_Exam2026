@@ -18,7 +18,7 @@ export default function Memberships() {
       <Navigation />
       {/* HERO - full bleed, no PageContainer */}
       <Section variant="hero">
-<Image
+        <Image
           src="/images/heroImg.png"
           alt="car wash"
           height={100}
@@ -123,7 +123,7 @@ export default function Memberships() {
           <Heading variant="section_sub_heading_green">
             Medlemskaber
           </Heading>
-          <div class="flex flex-col gap-4">
+          <div className="flex flex-col gap-4">
             {
             memberships.length > 0 ?
               memberships.map((membership) => (

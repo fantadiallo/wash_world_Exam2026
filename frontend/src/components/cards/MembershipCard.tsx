@@ -37,6 +37,8 @@ export default function MembershipCard({ membership }: MembershipCardProps) {
       <Button
         text="Bliv medlem"
         variant="membership_card"
+        as="link"
+        href="/memberships"
         className="mx-auto"
       />
     </Card>

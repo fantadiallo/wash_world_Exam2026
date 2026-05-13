@@ -12,7 +12,7 @@ import Heading from "../headings/Heading";
 export default function RegisterForm() {
   const [formData, setFormData] = useState<RegisterFormData>({
     name: "",
-    email: "",
+    last_name: '',
     password: "",
     confirmPassword: "",
   });

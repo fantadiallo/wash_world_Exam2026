@@ -14,3 +14,4 @@ export type RegisterFormData = {
   /** Password confirmation */
   confirmPassword: string;
 };
+
