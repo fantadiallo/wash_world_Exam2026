@@ -33,11 +33,14 @@ export default function MembershipCard({ membership }: MembershipCardProps) {
           </li>
         ))}
       </ul>
-
+      
+      
       <Button
         text="Bliv medlem"
         variant="membership_card"
-        className="mx-auto"
+        className="mx-auto justify-center"
+        as="link"
+        href={`/subscription?membership=${membership.id}`}
       />
     </Card>
   );
