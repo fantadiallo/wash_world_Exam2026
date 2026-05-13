@@ -62,8 +62,20 @@ export default function RegisterForm() {
         <label className="block mb-2 font-bold text-(--brand-green-white-bg)">Fulde navn</label>
         <input
           type="text"
-          name="name"
-          placeholder="Indtast fulde navn"
+          name="user_first_name"
+          placeholder="Indtast fornavn"
+          value={formData.name}
+          onChange={handleChange}
+          className="rounded-md w-full bg-(--gray-eighty) p-4 transition-outline duration-150 ease-in focus:ring-0 focus:outline-2 focus:outline-(--brand-green-white-bg)"
+        />
+      </div>
+
+      <div className="mb-6">
+        <label className="block mb-2 font-bold text-(--brand-green-white-bg)">Fulde navn</label>
+        <input
+          type="text"
+          name="user_last_name"
+          placeholder="Indtast efternavn"
           value={formData.name}
           onChange={handleChange}
           className="rounded-md w-full bg-(--gray-eighty) p-4 transition-outline duration-150 ease-in focus:ring-0 focus:outline-2 focus:outline-(--brand-green-white-bg)"
@@ -74,7 +86,7 @@ export default function RegisterForm() {
         <label className="block mb-2 font-bold text-(--brand-green-white-bg)">E-mail</label>
         <input
           type="email"
-          name="email"
+          name="user_email"
           placeholder="Indtast e-mail"
           value={formData.email}
           onChange={handleChange}
@@ -86,7 +98,7 @@ export default function RegisterForm() {
         <label className="block mb-2 font-bold text-(--brand-green-white-bg)">Adgangskode</label>
         <input
           type="password"
-          name="password"
+          name="user_password"
           placeholder="Indtast adgangskode"
           value={formData.password}
           onChange={handleChange}
@@ -98,7 +110,7 @@ export default function RegisterForm() {
         <label className="block mb-2 font-bold text-(--brand-green-white-bg)">Gentag adgangskode</label>
         <input
           type="password"
-          name="confirmPassword"
+          name="confirm_password"
           placeholder="Gentag adgangskode"
           value={formData.confirmPassword}
           onChange={handleChange}

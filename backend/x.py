@@ -6,6 +6,7 @@ from functools import wraps
 from icecream import ic
 from werkzeug.utils import secure_filename
 import uuid
+from flask import jsonify
 
 ic.configureOutput(prefix=f"_____ | ", includeContext=True)
 
@@ -40,12 +41,11 @@ def no_cache(view):
         return response
     return no_cache_view
 
-
 ##############################
 USER_FIRST_NAME_MIN = 2
 USER_FIRST_NAME_MAX = 20
 REGEX_USER_FIRST_NAME = f"^.{{{USER_FIRST_NAME_MIN},{USER_FIRST_NAME_MAX}}}$"
-def validate_user_first_name():
+def validate_user_first_name(user_first_name):
     user_first_name = request.form.get("user_first_name", "").strip()
     if not re.match(REGEX_USER_FIRST_NAME, user_first_name):
         raise Exception("company_exception user_first_name")
@@ -56,7 +56,7 @@ def validate_user_first_name():
 USER_LAST_NAME_MIN = 2
 USER_LAST_NAME_MAX = 20
 REGEX_USER_LAST_NAME = f"^.{{{USER_LAST_NAME_MIN},{USER_LAST_NAME_MAX}}}$"
-def validate_user_last_name():
+def validate_user_last_name(user_last_name):
     user_last_name = request.form.get("user_last_name", "").strip()
     if not re.match(REGEX_USER_LAST_NAME, user_last_name):
         raise Exception("company_exception user_last_name")
@@ -65,7 +65,7 @@ def validate_user_last_name():
 
 ##############################
 REGEX_EMAIL = "^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$"
-def validate_email( email ):
+def validate_email(email):
     email = email.strip()
     if not re.match(REGEX_EMAIL, email): 
         raise Exception("company_exception email")
@@ -104,45 +104,47 @@ def validate_uuid4_paranoia(uuid4):
     return uuid
 
 
-##############################
-REGEX_IMAGE = r"^.+\.(jpg|jpeg|png|gif|webp|bmp|svg)$"
 
-UPLOAD_FOLDER = 'uploads'
-def validate_image(image):
-    if not image:
-        raise Exception('company_exception image missing')
+############### HELPER METHODS ###############
 
-    if image.filename.strip() == '':
-        raise Exception('company_exception image empty')
-
-    original_image_name = secure_filename(image.filename)
-    os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-    filepath = os.path.join(UPLOAD_FOLDER, original_image_name)
-    image.save(filepath)
-    
-    return original_image_name
-
-
-##############################
-IMAGE_TITLE_MIN = 2
-IMAGE_TITLE_MAX = 20
-REGEX_IMAGE_TITLE = f"^.{{{IMAGE_TITLE_MIN},{IMAGE_TITLE_MAX}}}$"
-def validate_image_title(image_title):
-    image_title = request.form.get("image_title", "").strip()
-    if not re.match(REGEX_IMAGE_TITLE, image_title):
-        raise Exception("company_exception image_title")
-    return image_title
+# Fetch subscription perks
+def fetch_subscription_perks(subscription_type_id):
+    try:
+        conn, cursor = db()
+        query = 'SELECT * FROM subscription_perks WHERE subscription_type_id = %s'
+        cursor.execute(query, (subscription_type_id,))
+        perks = cursor.fetchall()
+        return perks
+    except Exception as ex:
+        ic(ex)
+        return "Error fetching perks", 500
+    finally:
+        if "cursor" in locals():
+            cursor.close()
+        if "conn" in locals():
+            conn.close()
 
 
-##############################
-IMAGE_ALT_MIN = 2
-IMAGE_ALT_MAX = 20
-REGEX_IMAGE_ALT = f"^.{{{IMAGE_ALT_MIN},{IMAGE_ALT_MAX}}}$"
-def validate_image_alt(image_alt):
-    image_alt = request.form.get("image_alt", "").strip()
-    if not re.match(REGEX_IMAGE_ALT, image_alt):
-        raise Exception("company_exception image_alt")
-    return image_alt
+# Fetch subscription types
+def fetch_subscription_types(subscription_type_id):
+    try:
+        conn, cursor = db()
+        query = 'SELECT * FROM subscription_types WHERE subscription_type_id = %s'
+        cursor.execute(query, (subscription_type_id,))
+
+        subscription_types = cursor.fetchall()
+        ic(subscription_types)
+        return subscription_types
+
+    except Exception as ex:
+        ic(ex)
+        return "Error fetching subscriptions", 500
+
+    finally:
+        if "cursor" in locals():
+            cursor.close()
+        if "conn" in locals():
+            conn.close()
 
 ##############################
 def send_email(subject, html):

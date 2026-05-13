@@ -38,6 +38,8 @@ export default function LoginForm() {
       <form
         onSubmit={handleSubmit}
         className="flex flex-col h-fit rounded-md bg-white text-white p-8 min-w-[300px] w-full max-w-md"
+        action="/login"
+        method="POST"
       >
       
       <Heading variant="form_heading">
