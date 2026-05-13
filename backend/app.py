@@ -46,10 +46,6 @@ def get_location(id):
 
 
 ##############################
-@app.get('/test-subscription-types/<subscription_type_id>')
-def test_subscription_types(subscription_type_id):
-    subscription_types = x.fetch_subscription_types(subscription_type_id)
-    return jsonify(subscription_types)
 
 
 
