@@ -33,7 +33,7 @@ export default function RegisterForm() {
   /**
    * Handles form submission
    */
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     if (formData.password !== formData.confirmPassword) {
@@ -43,7 +43,33 @@ export default function RegisterForm() {
 
     const { confirmPassword, ...dataToBackend } = formData;
 
-    console.log(dataToBackend);
+    try
+    {
+        const res = await fetch('http://127.0.0.1/register-user', {
+          method: 'POST',
+          headers:
+          {
+            'Content-Type': 'application/json'
+          },
+
+          body: JSON.stringify(dataToBackend)
+        })
+
+        if(!res.ok)
+        {
+          throw new Error(`Error: ${res.status}`)
+        }
+
+        const data = await res.json()
+        console.log("User created: ", dataToBackend);
+    }
+    catch(err)
+    {
+      console.error(`Error creating user: ${err}`)
+    }
+
+    
+    
   }
 
   return (
@@ -52,7 +78,6 @@ export default function RegisterForm() {
         onSubmit={handleSubmit}
         className="flex flex-col h-fit rounded-md bg-white text-white p-8 min-w-[300px] w-full max-w-md"
         method="POST"
-        action="/register-user"
       >
         <Heading variant="form_heading">
           Opret bruger
@@ -142,6 +167,7 @@ export default function RegisterForm() {
 
         <Button
           text="Opret konto"
+          type="submit"
           variant="submit"
         />
       </form>

@@ -1,5 +1,5 @@
 'use client'
-
+import { useEffect } from 'react'
 import locationsData from '@/src/app/map_data/locations'
 import { useState } from 'react'
 import Button from '../buttons/Button'
@@ -17,8 +17,32 @@ import useLocationsWithDistance from '@/src/hooks/useLocationsWithDistance'
 
 export default function ImageSlider()
 {
-    const locations = useLocationsWithDistance(locationsData)
     const [currentSlideIndex, setCurrentSlideIndex] = useState(0)
+    const [locations, setLocations] = useState<any[]>([])
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        const fetchLocations = async () => {
+            try {
+                const res = await fetch('http://127.0.0.1/locations')
+                const data = await res.json()
+
+                setLocations(data)
+            } catch (err) {
+                console.error('Failed to fetch locations:', err)
+            } finally {
+                setLoading(false)
+            }
+        }
+
+        fetchLocations()
+    }, [])
+
+    const locationsWithDistance = useLocationsWithDistance(locations ?? [])
+
+    const closestFourLocations = [...locationsWithDistance]
+        .sort((a, b) => Number(a.distance) - Number(b.distance))
+        .slice(0, 4)
 
     const slides: SlideProps[] = [
     {
@@ -69,14 +93,15 @@ export default function ImageSlider()
         imageAlt: 'washworld',
         children: (
             <CardsContainer>
-                {
-                    locations.length > 0 ?
-                        locations.map((location, index) => (
-                            <LocationCard key={index} {...location} />
-                        )) : (
-                            ''
-                        )
-                }
+                {loading ? (
+                    <p>Loading...</p>
+                ) : locations.length > 0 ? (
+                    closestFourLocations.map((location, index) => (
+                        <LocationCard key={location.id ?? index} {...location} />
+                    ))
+                ) : (
+                    <p>Ingen lokationer</p>
+                )}
             </CardsContainer>
         )
     },

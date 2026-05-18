@@ -27,11 +27,11 @@ export type MapLocationProps =
   self_carwash_amount: number
   hasSelfCarWash: boolean
   image: string
-  lat: string
-  long: string
+  lat: string | number
+  lng: string | number
 
   // keep this if you're using it elsewhere
-  geoCode: [number, number]
+  geoCode?: [number, number]
 }
 
 // Used for the popups

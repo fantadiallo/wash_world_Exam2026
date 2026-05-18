@@ -46,7 +46,7 @@ USER_FIRST_NAME_MIN = 2
 USER_FIRST_NAME_MAX = 20
 REGEX_USER_FIRST_NAME = f"^.{{{USER_FIRST_NAME_MIN},{USER_FIRST_NAME_MAX}}}$"
 def validate_user_first_name(user_first_name):
-    user_first_name = request.form.get("user_first_name", "").strip()
+    user_first_name = (user_first_name or "").strip()
     if not re.match(REGEX_USER_FIRST_NAME, user_first_name):
         raise Exception("company_exception user_first_name")
     return user_first_name
@@ -57,7 +57,7 @@ USER_LAST_NAME_MIN = 2
 USER_LAST_NAME_MAX = 20
 REGEX_USER_LAST_NAME = f"^.{{{USER_LAST_NAME_MIN},{USER_LAST_NAME_MAX}}}$"
 def validate_user_last_name(user_last_name):
-    user_last_name = request.form.get("user_last_name", "").strip()
+    user_last_name = (user_last_name or "").strip()
     if not re.match(REGEX_USER_LAST_NAME, user_last_name):
         raise Exception("company_exception user_last_name")
     return user_last_name

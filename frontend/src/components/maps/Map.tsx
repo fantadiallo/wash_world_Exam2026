@@ -1,5 +1,6 @@
 'use client'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+
 import MapLocationsContainer from './MapLocationsContainer'
 import mapLocations from '../../../src/app/map_data/locations'
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
@@ -19,9 +20,36 @@ const filters: Filter[] = [
 ]
 
 
-export default function Map({ view, location, locations = mapLocations, currentUserLocation}: MapProps)
+export default function Map({ view, location, currentUserLocation }: MapProps)
 {
-    
+    const [loading, setLoading] = useState(true)
+    const [locations, setLocations] = useState<MapLocation[]>([])
+
+    useEffect(() =>
+        {
+            const fetchLocationsData = async () =>
+            {
+                try
+                {
+                    const res = await fetch('http://127.0.0.1/locations')
+                    const data = await res.json()
+                    console.log(data)
+                    setLocations(data)
+                }
+                catch (err)
+                {
+                    console.error('Failed to fetch locations: ', err)
+                }
+                finally
+                {
+                    setLoading(false)
+                }
+            }
+            
+            fetchLocationsData()
+        },
+    [])
+
     const [activeFilter, setActiveFilter] = useState("car_wash")
 
     const filteredLocations = locations.filter((location) => {

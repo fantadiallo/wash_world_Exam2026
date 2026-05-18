@@ -9,6 +9,7 @@ export type ButtonProps = {
     href?: string
     target?: string,
     rel?: string
+    type?: string
 }
 
 export type Filter =

@@ -25,6 +25,7 @@ export default function Button({
     as = 'button',
     href,
     target,
+    type,
 }: ButtonProps)
 {
     const styles = `${variants[variant]} ${className}`
@@ -41,7 +42,7 @@ export default function Button({
 
     // BUTTON VERSION
     return (
-        <button id={id} onClick={onClick} className={styles}>
+        <button id={id} onClick={onClick} className={styles} type={type}>
             {children}
             {text}
         </button>

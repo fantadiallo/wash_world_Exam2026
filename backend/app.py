@@ -55,26 +55,35 @@ def get_location(id):
 @app.post('/register-user')
 def register_user():
     try:
-        user_pk = uuid.uuid4().hex
-        user_first_name = x.validate_user_first_name(request.form.get('user_first_name'))
-        user_last_name = x.validate_user_last_name(request.form.get('user_last_name'))
-        user_email = x.validate_email(request.form.get('user_email'))
-        user_password = x.validate_user_password(request.form.get('user_password'))
-        user_confirm_password = x.validate_user_password(request.form.get('confirm_password'))
+        data = request.get_json()
+
+        user_id = uuid.uuid4().hex
+
+        ic("INCOMING DATA: ", data)
+
+        user_first_name = x.validate_user_first_name(data.get('name'))
+        user_last_name = x.validate_user_last_name(data.get('last_name'))
+        user_email = x.validate_email(data.get('email'))
+        user_password = x.validate_user_password(data.get('password'))
+       
+
         user_hashed_password = generate_password_hash(user_password)
 
-        if not user_password == user_confirm_password:
-            return "Passwords do not match", 400
-
         db, cursor = x.db()
-        
-        # Insert into register_user
-        query = "INSERT INTO users VALUES(%s, %s, %s, %s, %s)"
-        cursor.execute(query, (user_pk, user_first_name, user_last_name, user_email, user_hashed_password))
 
-        # Insert only user_id into user_dashboard
-        query = "INSERT INTO user_dashboard (user_id) VALUES(%s)"
-        cursor.execute(query, (user_pk,))
+        query = "INSERT INTO users VALUES(%s, %s, %s, %s, %s)"
+        cursor.execute(query, (
+            user_id,
+            user_first_name,
+            user_last_name,
+            user_email,
+            user_hashed_password
+        ))
+
+        cursor.execute(
+            "INSERT INTO user_dashboard (user_id) VALUES(%s)",
+            (user_id,)
+        )
 
         db.commit()
 
@@ -82,7 +91,7 @@ def register_user():
 
     except Exception as ex:
         ic(ex)
-        return jsonify({"error": "Something went wrong"}), 500
+        return jsonify({"error": str(ex)}), 500
 
     finally:
         if "cursor" in locals():
@@ -95,8 +104,10 @@ def register_user():
 @app.post('/login')
 def login():
     try:
-        user_email = x.validate_email(request.form.get('user_email'))
-        user_password = x.validate_user_password(request.form.get('user_password'))
+        data = request.get_json()
+
+        user_email = x.validate_email(data.get('email'))
+        user_password = x.validate_user_password(data.get('password'))
         db, cursor = x.db()
         query = 'SELECT * FROM users WHERE user_email = %s'
         cursor.execute(query, (user_email,))
@@ -133,21 +144,29 @@ def login():
 @app.get('/dashboard')
 def show_user_dashboard():
     try:
-        db, cursor = x.db()
-        query = 'SELECT * FROM user_dashboard WHERE user_id = %s'
+        user = session.get('user')
 
-        user_id = session.get('user')['user_id']
-        ic(session.get('user'))
+        if not user:
+            return "No user", 400
+
+        user_id = user.get('user_pk')
+
+        db, cursor = x.db()
+
+        query = 'SELECT * FROM user_dashboard WHERE user_id = %s'
         cursor.execute(query, (user_id,))
 
         dashboard = cursor.fetchone()
 
-
-        return jsonify(dashboard)
+        return jsonify({
+            "loggedIn": True,
+            "user": user,
+            "dashboard": dashboard
+        })
 
     except Exception as ex:
         ic(ex)
-        return "Error loading the dashboard", 500
+        return jsonify({"error": str(ex)}), 500
 
     finally:
         if "cursor" in locals():
