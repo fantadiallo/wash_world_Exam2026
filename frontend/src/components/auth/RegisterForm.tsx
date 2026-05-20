@@ -5,6 +5,7 @@ import Button from "../buttons/Button";
 import type { RegisterFormData } from "../../types/register";
 import Heading from "../headings/Heading";
 
+
 /**
  * RegisterForm component
  * Handles user registration input and validation
@@ -42,33 +43,32 @@ export default function RegisterForm() {
     }
 
     const { confirmPassword, ...dataToBackend } = formData;
-
+    
     try
     {
-        const res = await fetch('http://127.0.0.1/register-user', {
-          method: 'POST',
-          headers:
-          {
-            'Content-Type': 'application/json'
-          },
-
-          body: JSON.stringify(dataToBackend)
-        })
-
-        if(!res.ok)
+      const res = await fetch('http://127.0.0.1/register-user', {
+        method: 'POST',
+        headers:
         {
-          throw new Error(`Error: ${res.status}`)
-        }
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(dataToBackend)
+      })
 
-        const data = await res.json()
-        console.log("User created: ", dataToBackend);
+      const data = await res.json()
+
+      if(!res.ok)
+      {
+        alert(data.error || 'Something went wrong')
+        return
+      }
+      
+      alert('Tjek din email for at bekræfte din konto')
     }
-    catch(err)
+    catch(err)  
     {
-      console.error(`Error creating user: ${err}`)
-    }
-
-    
+      console.log(`Error creating user: ${err}`)
+    }   
     
   }
 
