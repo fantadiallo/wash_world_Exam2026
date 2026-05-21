@@ -23,7 +23,7 @@ def db():
             password = "password",
             database = "wash_world_exam"
         )
-        cursor = db.cursor(dictionary=True)
+        cursor = db.cursor(dictionary=True, buffered=True)
         return db, cursor
     except Exception as e:
         print(e, flush=True)
