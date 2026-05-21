@@ -71,7 +71,7 @@ def register_user():
 
         db, cursor = x.db()
 
-        query = "INSERT INTO users VALUES(%s, %s, %s, %s, %s)"
+        query = "INSERT INTO users (user_id, user_first_name, user_last_name, user_email, user_hashed_password) VALUES(%s, %s, %s, %s, %s)"
         cursor.execute(query, (
             user_id,
             user_first_name,
