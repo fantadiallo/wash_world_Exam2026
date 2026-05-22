@@ -165,13 +165,11 @@ export default function RegisterForm() {
           />
         </div>
 
-      <Button 
-        as="link"
-        href="/login"
-        text="Opret konto"
-        variant="primary"
-        className="w-full justify-center text-xl py-4"
-      />
+     <Button 
+  text="Opret konto"
+  variant="primary"
+  className="w-full justify-center text-xl py-4"
+/>
 
       <p className="text-center mt-4">
         Har du allerede en konto?{" "}
@@ -179,6 +177,7 @@ export default function RegisterForm() {
           Log ind
         </span>
       </p>
-    </form>
+       </form>
+       </div>
   );
 }

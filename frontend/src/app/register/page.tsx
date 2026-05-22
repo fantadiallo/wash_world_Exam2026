@@ -6,12 +6,14 @@ import Section from "@/src/components/sections/Section";
 
 export default function Register() {
   return (
-    <Layout>
-      <Navigation />
+    <>
+      <Layout>
+        <Navigation />
 
-      <main className="min-h-screen flex items-center justify-center">
-        <LoginForm />
-      </main>
+        <main className="min-h-screen flex items-center justify-center">
+          <RegisterForm />
+        </main>
+      </Layout>
     </>
   );
 }
