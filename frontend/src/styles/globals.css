@@ -1,5 +1,5 @@
 @import "tailwindcss";
-
+@import 'leaflet/dist/leaflet.css';
 
 @theme
 {
@@ -74,7 +74,7 @@
 }
 
 @layer base {
-  h1, h2, h3, h4, h5, h6, button, a, small {
+  header, h1, h2, h3, h4, h5, h6, button, a, small:has(:not(.mx-10.mt-12)) {
     font-family: "Gilroy", sans-serif;
     font-weight: 700;
   }
@@ -88,4 +88,62 @@
     font-family: "Gilroy", sans-serif;
     font-weight: 600;
   }
+}
+
+/* Leaflet */
+.leaflet-container
+{
+    height: 100%;
+    width: 100%;
+    border-radius: 5px;
+}
+
+.leaflet-popup-content-wrapper {
+    background: transparent !important;
+    box-shadow: none !important;
+    border-radius: 5px !important;
+    padding: 0 !important;
+}
+
+.leaflet-popup-content {
+    margin: 0 !important;
+}
+
+.leaflet-popup-tip-container {
+    display: none !important;
+}
+
+.leaflet-popup-close-button {
+    display: none !important; /* Hide the native × button */
+}
+
+.leaflet-popup-content h1,
+.leaflet-popup-content h2,
+.leaflet-popup-content h3,
+.leaflet-popup-content h4 {
+    font-size: revert;
+    font-weight: revert;
+}
+
+.leaflet-popup-content p {
+    margin: 0;
+}
+
+.leaflet-popup-content-wrapper {
+    width: fit-content !important;
+}
+
+.leaflet-popup-content p, .leaflet-popup-content small {
+    font-size: revert;
+}
+
+.leaflet-popup-content a {
+    color: inherit !important;
+}
+
+.leaflet-marker-icon.marker-cluster.marker-cluster-small.leaflet-zoom-animated.leaflet-interactive
+{
+    font-family: var(--font-primary) !important;
+    color: var(--solid-white) !important;
+    background-color: var(--brand-green-dark-bg) !important;
 }

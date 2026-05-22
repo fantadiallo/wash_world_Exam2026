@@ -11,7 +11,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": True,
         "image": "", 
         "lat": "57.46216399137906",
-        "long": "10.519673763955458",
+        "lng": "10.519673763955458",
     },
     {
         "id": "0cd1fe5264aa44828a070525a17bf11a",
@@ -24,7 +24,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": False,
         "image": "", 
         "lat": "57.4553571092762",
-        "long": "10.039344984267355",
+        "lng": "10.039344984267355",
     },
     {
         "id": "86188a392acb46ab9d50a26b7906d1f9",
@@ -37,7 +37,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": False,
         "image": "", 
         "lat": "57.08932963741084",
-        "long": "9.970806004490344",
+        "lng": "9.970806004490344",
     },
     {
         "id": "974ea194cd2a4cd7890d1d9371507183",
@@ -50,7 +50,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": False,
         "image": "", 
         "lat": "57.00614839773539",
-        "long": "9.926103633521791",
+        "lng": "9.926103633521791",
     },
     {
         "id": "15b37e56148a48849ac5298734efaf3e",
@@ -63,7 +63,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": False,
         "image": "", 
         "lat": "57.01547614643774",
-        "long": "9.896201620029434",
+        "lng": "9.896201620029434",
     },
     {
         "id": "c97fea13b496493c814042a98bd6bf5b",
@@ -76,7 +76,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": True,
         "image": "", 
         "lat": "56.96910167158323",
-        "long": "8.734299695816933",
+        "lng": "8.734299695816933",
     },
     {
         "id": "3fcf1493aeca42f1bc3039ec75f55c79",
@@ -89,7 +89,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": False,
         "image": "", 
         "lat": "56.96902564497907",
-        "long": "8.734342611158562",
+        "lng": "8.734342611158562",
     },
     {
         "id": "87615566fe9f44c98d87114e2938d36d",
@@ -102,7 +102,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": False,
         "image": "", 
         "lat": "56.341620432332924",
-        "long": "8.637228339962169",
+        "lng": "8.637228339962169",
     },
     {
         "id": "860b5399f76c43ec8f35229c13b9a312",
@@ -115,7 +115,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": False,
         "image": "", 
         "lat": "56.96897011341486",
-        "long": "8.734396257657325",
+        "lng": "8.734396257657325",
     },
     {
         "id": "203c0f3735644216affbb12a37298246",
@@ -128,7 +128,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": False,
         "image": "", 
         "lat": "56.46938953760636",
-        "long": "9.409542813254005",
+        "lng": "9.409542813254005",
     },
     {
         "id": "0460e8fb1129457dab09d828458021d6",
@@ -141,7 +141,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": False,
         "image": "", 
         "lat": "56.44426724999542",
-        "long": "9.38863825558129",
+        "lng": "9.38863825558129",
     },
     {
         "id": "5b883d28315e444a9b6d40ad2eeee6a2",
@@ -154,7 +154,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": False,
         "image": "", 
         "lat": "56.466397730573185",
-        "long": "10.054639397910984",
+        "lng": "10.054639397910984",
     },
     {
         "id": "ab724b4ac3f6472d8638037e13965e61",
@@ -167,7 +167,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": False,
         "image": "", 
         "lat": "56.430532188219466",
-        "long": "10.053845324894839",
+        "lng": "10.053845324894839",
     },
     {
         "id": "5a1576f9ffbc403888a1385854ed6e39",
@@ -180,7 +180,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": True,
         "image": "", 
         "lat": "56.38370511633988",
-        "long": "10.865630744178558",
+        "lng": "10.865630744178558",
     },
     {
         "id": "296c54635a104318a1823180372e971b",
@@ -192,7 +192,7 @@ WASH_WORLD_LOCATIONS = [
         "self_carwash_amount": 0,
         "hasSelfCarWash": False,
         "lat": "56.40885644730393",
-        "long": "10.926153282565142",
+        "lng": "10.926153282565142",
     },
     {
         "id": "38b5cad4fcf94e34a4dca6c54b1cb3de",
@@ -205,7 +205,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": False,
         "image": "", 
         "lat": "56.22481936318872",
-        "long": "10.236581933732165",
+        "lng": "10.236581933732165",
     },
     {
         "id": "743d29ef8463487491ef44c18d9daf15",
@@ -218,7 +218,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": False,
         "image": "", 
         "lat": "56.201958067314905",
-        "long": "10.244406826732762",
+        "lng": "10.244406826732762",
     },
     {
         "id": "5e42f0ded3ca4546a064d684f260f831",
@@ -230,7 +230,7 @@ WASH_WORLD_LOCATIONS = [
         "self_carwash_amount": 0,
         "hasSelfCarWash": False,
         "lat": "56.18170115592209",
-        "long": "10.124924780703127",
+        "lng": "10.124924780703127",
     },
     {
         "id": "b20e24ec331249c48b6c0fbce624aa75",
@@ -243,7 +243,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": True,
         "image": "", 
         "lat": "56.11140805265527",
-        "long": "10.125025197892297",
+        "lng": "10.125025197892297",
     },
     {
         "id": "85f36b2b411345719fbe13305851babf",
@@ -256,7 +256,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": False,
         "image": "", 
         "lat": "56.1077444456736",
-        "long": "10.166942711384964",
+        "lng": "10.166942711384964",
     },
     {
         "id": "58c9ceaf62974f2682edeb0a0946d206",
@@ -269,7 +269,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": False,
         "image": "", 
         "lat": "56.18152312771684",
-        "long": "9.537032996045973",
+        "lng": "9.537032996045973",
     },
     {
         "id": "30fe7483709544348f6960548d1a1566",
@@ -282,7 +282,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": True,
         "image": "", 
         "lat": "56.12391376106274",
-        "long": "9.173777353714351",
+        "lng": "9.173777353714351",
     },
     {
         "id": "04a38b09cf3848d58ad271f6c9ea33b8",
@@ -295,7 +295,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": True,
         "image": "", 
         "lat": "56.153538132175214",
-        "long": "8.987043426730217",
+        "lng": "8.987043426730217",
     },
     {
         "id": "7b6413de480f4d68a3661bcc861afba2",
@@ -308,7 +308,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": False,
         "image": "", 
         "lat": "56.13235659966984",
-        "long": "8.959504484330164",
+        "lng": "8.959504484330164",
     },
     {
         "id": "8bf8ef09d23241539c2c3e81d560adc9",
@@ -321,7 +321,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": False,
         "image": "", 
         "lat": "55.96075667374571",
-        "long": "9.104366642062896",
+        "lng": "9.104366642062896",
     },
     {
         "id": "ceec4ee83e584cbdad87dc5feaa8bb1e",
@@ -334,7 +334,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": False,
         "image": "", 
         "lat": "55.504084398164984",
-        "long": "8.407200897860381",
+        "lng": "8.407200897860381",
     },
     {
         "id": "b0f30d5f56e34f64a79c514f7d480302",
@@ -347,7 +347,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": True,
         "image": "", 
         "lat": "55.35201229412648",
-        "long": "8.780098728801606",
+        "lng": "8.780098728801606",
     },
     {
         "id": "9d877e5bc2ec4631a76ace9a1c1d036c",
@@ -360,7 +360,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": True,
         "image": "", 
         "lat": "55.83361423105542",
-        "long": "9.806406896027694",
+        "lng": "9.806406896027694",
     },
     {
         "id": "5bafe6bf429843f69872739cc78c068f",
@@ -373,7 +373,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": False,
         "image": "", 
         "lat": "55.724826821951",
-        "long": "9.583598124857701",
+        "lng": "9.583598124857701",
     },
     {
         "id": "be152a716fd94c25b5bf0355dd0657bc",
@@ -386,7 +386,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": False,
         "image": "", 
         "lat": "55.68126110409973",
-        "long": "9.566831869033953",
+        "lng": "9.566831869033953",
     },
     {
         "id": "59e188a9c5b14101aeb7e053be17da30",
@@ -399,7 +399,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": False,
         "image": "", 
         "lat": "55.5698907611019",
-        "long": "9.727815084370937",
+        "lng": "9.727815084370937",
     },
     {
         "id": "b099fb0ffbd94bd6a48f497881436871",
@@ -412,7 +412,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": False,
         "image": "", 
         "lat": "55.53561424554502",
-        "long": "9.71880781875487",
+        "lng": "9.71880781875487",
     },
     {
         "id": "71b0c4bbd87e48c4a97ca33589ba88ac",
@@ -425,7 +425,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": True,
         "image": "", 
         "lat": "55.51384866003161",
-        "long": "9.455601886217977",
+        "lng": "9.455601886217977",
     },
     {
         "id": "5d8494648e944143ad8639f5ef800c78",
@@ -438,7 +438,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": False,
         "image": "", 
         "lat": "55.50418617912392",
-        "long": "9.458522496010445",
+        "lng": "9.458522496010445",
     },
     {
         "id": "27ca038758444c65b9fe3847c59e3ef7",
@@ -451,7 +451,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": True,
         "image": "", 
         "lat": "55.25983532808771",
-        "long": "9.474673287188748",
+        "lng": "9.474673287188748",
     },
     {
         "id": "11699bd80b034754b64c5e34d41680ef",
@@ -464,7 +464,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": True,
         "image": "", 
         "lat": "55.259897502881294",
-        "long": "9.474557011642883",
+        "lng": "9.474557011642883",
     },
     {
         "id": "dad3b11e608d410c841c66e3e3914cd7",
@@ -477,7 +477,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": False,
         "image": "", 
         "lat": "54.95161902000648",
-        "long": "8.887668197831582",
+        "lng": "8.887668197831582",
     },
     {
         "id": "300ba3a4ce9045fca48e6eed2b35689a",
@@ -490,7 +490,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": False,
         "image": "", 
         "lat": "54.9195670957541",
-        "long": "9.808113295980007",
+        "lng": "9.808113295980007",
     },
 
     ### FYN ###
@@ -505,7 +505,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": False,
         "image": "", 
         "lat": "55.51210760053291",
-        "long": "9.766099740478596",
+        "lng": "9.766099740478596",
     },
     {
         "id": "1af6276736004c299aeecfd0f56cf1ff",
@@ -518,7 +518,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": True,
         "image": "", 
         "lat": "55.39498615154871",
-        "long": "10.346004236733043",
+        "lng": "10.346004236733043",
     },
     {
         "id": "b0776aca34ce4ddab80c4e87abd2f729",
@@ -531,7 +531,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": False,
         "image": "", 
         "lat": "55.391639070528555",
-        "long": "10.43641252669029",
+        "lng": "10.43641252669029",
     },
     {
         "id": "e8a1bb7c08a949f3aeffeb5ba939c17b",
@@ -544,7 +544,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": False,
         "image": "", 
         "lat": "55.379997080838585",
-        "long": "10.432930924839651",
+        "lng": "10.432930924839651",
     },
     {
         "id": "68d337392ff44a459e44f19239f9229e",
@@ -557,7 +557,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": False,
         "image": "", 
         "lat": "55.37997703631344",
-        "long": "10.43298443887874",
+        "lng": "10.43298443887874",
     },
     {
         "id": "a3d4164897564470a09e0b4b58c7b84e",
@@ -570,7 +570,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": False,
         "image": "", 
         "lat": "55.073303590319945",
-        "long": "10.583278014759015",
+        "lng": "10.583278014759015",
     },
     {
         "id": "f4669154275c4e5ebb5f9c8dace4ff24",
@@ -583,7 +583,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": False,
         "image": "", 
         "lat": "55.30925588955265",
-        "long": "10.809770218743024",
+        "lng": "10.809770218743024",
     },
 
     ### SJÆLLAND ###
@@ -598,7 +598,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": True,
         "image": "", 
         "lat": "56.024086113766",
-        "long": "12.571810197887665",
+        "lng": "12.571810197887665",
     },
     {
         "id": "e04bc6e507334d93a67509ed8aad59b3",
@@ -611,7 +611,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": True,
         "image": "", 
         "lat": "55.93248511259722",
-        "long": "12.279708997882901",
+        "lng": "12.279708997882901",
     },
     {
         "id": "027c857dac2a4460bd0e1480112a2cae",
@@ -624,7 +624,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": False,
         "image": "", 
         "lat": "55.97776896489598",
-        "long": "12.007495344178567",
+        "lng": "12.007495344178567",
     },
     {
         "id": "9109619292404d57888b4f417cdd54b7",
@@ -637,7 +637,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": False,
         "image": "", 
         "lat": "55.84530391944545",
-        "long": "12.074259638356901",
+        "lng": "12.074259638356901",
     },
     {
         "id": "aa71e942c3bd431789a7444cb1fad2e9",
@@ -650,7 +650,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": True,
         "image": "", 
         "lat": "55.81695373555342",
-        "long": "12.370366284383945",
+        "lng": "12.370366284383945",
     },
     {
         "id": "5be948bc9d304eb487f43d8f4e978001",
@@ -663,7 +663,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": True,
         "image": "", 
         "lat": "55.73383948812012",
-        "long": "12.459898996022451",
+        "lng": "12.459898996022451",
     },
     {
         "id": "ee9614d324044b0ba1a8e00ea00e63e7",
@@ -676,7 +676,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": True,
         "image": "", 
         "lat": "55.72537032541368",
-        "long": "12.416825995754236",
+        "lng": "12.416825995754236",
     },
     {
         "id": "cf6b7076de4c481293a985ada555213b",
@@ -689,7 +689,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": True,
         "image": "", 
         "lat": "55.725191857237874",
-        "long": "12.416641226707691",
+        "lng": "12.416641226707691",
     },
     {
         "id": "b43ce8f554434329ad5876c29bd94606",
@@ -701,7 +701,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": False,
         "image": "", 
         "lat": "55.61836002800815",
-        "long": "12.424020282523562",
+        "lng": "12.424020282523562",
     },
     {
         "id": "be1bf45d0a224a57b3b3036229ab5ada",
@@ -714,7 +714,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": True,
         "image": "", 
         "lat": "55.62361600712567",
-        "long": "12.321326338345244",
+        "lng": "12.321326338345244",
     },
     {
         "id": "714de19a3b3342d198ab4d41c3837a3a",
@@ -727,7 +727,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": False,
         "image": "", 
         "lat": "55.658178597558205",
-        "long": "12.296511997868475",
+        "lng": "12.296511997868475",
     },
     {
         "id": "b6502d877e1849e7b9c11c40ec204ed0",
@@ -740,7 +740,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": False,
         "image": "", 
         "lat": "55.643738383945646",
-        "long": "12.108966699717689",
+        "lng": "12.108966699717689",
     },
     {
         "id": "cdb33fa5d9ab4724b5de5af3edd92fd6",
@@ -753,7 +753,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": False,
         "image": "", 
         "lat": "55.628594797614575",
-        "long": "12.066271186507135",
+        "lng": "12.066271186507135",
     },
     {
         "id": "80e9fb3116694579aa5b6bb08d310be1",
@@ -766,7 +766,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": True,
         "image": "", 
         "lat": "55.703471545793214",
-        "long": "11.665348526706541",
+        "lng": "11.665348526706541",
     },
     {
         "id": "8827885994c14a37a6bfe02e02af0a68",
@@ -779,7 +779,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": True,
         "image": "", 
         "lat": "55.678793501946544",
-        "long": "11.136002124855285",
+        "lng": "11.136002124855285",
     },
     {
         "id": "1927f50288c04a0f97baf84a5c32255b",
@@ -792,7 +792,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": False,
         "image": "", 
         "lat": "55.471870710149666",
-        "long": "12.181971970872953",
+        "lng": "12.181971970872953",
     },
     {
         "id": "80786617e98147458b7d9fd0fb9f5da1",
@@ -805,7 +805,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": False,
         "image": "", 
         "lat": "55.01105452540805",
-        "long": "11.90994072883571",
+        "lng": "11.90994072883571",
     },
     {
         "id": "a65a9e4bdae64c308ff3d460847cd5f9",
@@ -818,7 +818,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": True,
         "image": "", 
         "lat": "55.23925139957572",
-        "long": "11.778310013189438",
+        "lng": "11.778310013189438",
     },
     {
         "id": "05a8075fbab542d59ba0822fccd0f35c",
@@ -831,7 +831,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": False,
         "image": "", 
         "lat": "55.24978399440124",
-        "long": "11.780977196983292",
+        "lng": "11.780977196983292",
     },
     {
         "id": "db8e4ad417f5446f94d6fb9bde9ded3e",
@@ -844,7 +844,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": False,
         "image": "", 
         "lat": "55.24960977398422",
-        "long": "11.78102012483286",
+        "lng": "11.78102012483286",
     },
     {
         "id": "bbcc1ce43c744fbeabac60769e438ddb",
@@ -857,7 +857,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": False,
         "image": "", 
         "lat": "55.4514392542639",
-        "long": "11.79014235182915",
+        "lng": "11.79014235182915",
     },
     {
         "id": "fced6393f38442d89fb5916745132db3",
@@ -870,7 +870,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": False,
         "image": "", 
         "lat": "55.44512429984391",
-        "long": "11.563464422721616",
+        "lng": "11.563464422721616",
     },
     {
         "id": "6899e98c67504252b767d2669e3e1397",
@@ -883,7 +883,7 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": False,
         "image": "", 
         "lat": "55.40786251310508",
-        "long": "11.367667584657156",
+        "lng": "11.367667584657156",
     },
     {
         "id": "c1741a549bb7419e8f1215e392e5ed45",
@@ -896,6 +896,6 @@ WASH_WORLD_LOCATIONS = [
         "hasSelfCarWash": False,
         "image": "", 
         "lat": "55.39177752530283",
-        "long": "11.353113513197368",
+        "lng": "11.353113513197368",
     },
 ]

@@ -32,7 +32,7 @@ export default function Navigation() {
   if(pathname !== '/profile')
   {
     return (
-        <nav className={`w-full ${isOpen ? 'fixed inset-0 z-50 bg-(--gray-eighty)' : 'bg-(--gray-eighty)'}`}>
+        <nav className={`w-full z-[100000] ${isOpen ? 'fixed inset-0 z-50 bg-(--gray-eighty)' : 'bg-(--gray-eighty)'}`}>
           <div className="bg-(--solid-black) flex justify-between items-center px-8 py-6 h-16">
             {pathname !== '/' ? (
               <Link href="/">

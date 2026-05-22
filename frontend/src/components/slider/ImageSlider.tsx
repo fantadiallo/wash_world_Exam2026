@@ -1,14 +1,50 @@
 'use client'
-
+import { useEffect } from 'react'
+import locationsData from '@/src/app/map_data/locations'
 import { useState } from 'react'
 import Button from '../buttons/Button'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft, faChevronRight, faMapMarkerAlt, faCrown, faPumpSoap, faCreditCard, faLinkSlash} from '@fortawesome/free-solid-svg-icons'
 import { SlideProps } from '@/src/types/slide'
+import CardsContainer from '../containers/CardsContainer'
+import LocationCard from '../cards/LocationCard'
 import Slide from './Slide'
 import SlideCounter from './SlideCounter'
+import useLocationsWithDistance from '@/src/hooks/useLocationsWithDistance'
 
-const slides: SlideProps[] = [
+
+
+
+export default function ImageSlider()
+{
+    const [currentSlideIndex, setCurrentSlideIndex] = useState(0)
+    const [locations, setLocations] = useState<any[]>([])
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        const fetchLocations = async () => {
+            try {
+                const res = await fetch('http://127.0.0.1/locations')
+                const data = await res.json()
+
+                setLocations(data)
+            } catch (err) {
+                console.error('Failed to fetch locations:', err)
+            } finally {
+                setLoading(false)
+            }
+        }
+
+        fetchLocations()
+    }, [])
+
+    const locationsWithDistance = useLocationsWithDistance(locations ?? [])
+
+    const closestFourLocations = [...locationsWithDistance]
+        .sort((a, b) => Number(a.distance) - Number(b.distance))
+        .slice(0, 4)
+
+    const slides: SlideProps[] = [
     {
         id: '1',
         slideTopicText: 'BILVASK',
@@ -18,13 +54,13 @@ const slides: SlideProps[] = [
         imageAlt: 'washworld',
         children: (
             <div className="flex flex-col gap-4">
-               <Button as="link" href="/locations" variant="primary">
-                   <FontAwesomeIcon icon={faMapMarkerAlt} /> <span>Find vaskehaller</span>
-               </Button>
+            <Button as="link" href="/locations" variant="primary">
+                <FontAwesomeIcon icon={faMapMarkerAlt} /> <span>Find vaskehaller</span>
+            </Button>
                 <Button as="link" href="/locations" variant="secondary">
-                   <FontAwesomeIcon icon={faCrown} /> <span>Se medlemskaber</span>
-               </Button>
-           </div>
+                <FontAwesomeIcon icon={faCrown} /> <span>Se medlemskaber</span>
+            </Button>
+        </div>
         )
     },
     {
@@ -48,7 +84,7 @@ const slides: SlideProps[] = [
             </ul>
         )
     },
-     {
+    {
         id: '3',
         slideTopicText: 'Vaskehal',
         slideHeaderText: 'Altid en ren bil indenfor rækkevidde',
@@ -56,14 +92,20 @@ const slides: SlideProps[] = [
         imageSrc: '/images/slider_images/washworld.jpg',
         imageAlt: 'washworld',
         children: (
-            <h2 className="text-white">Location search goes here</h2>
+            <CardsContainer>
+                {loading ? (
+                    <p>Loading...</p>
+                ) : locations.length > 0 ? (
+                    closestFourLocations.map((location, index) => (
+                        <LocationCard key={location.id ?? index} {...location} />
+                    ))
+                ) : (
+                    <p>Ingen lokationer</p>
+                )}
+            </CardsContainer>
         )
     },
-]
-
-export default function ImageSlider()
-{
-    const [currentSlideIndex, setCurrentSlideIndex] = useState(0)
+    ]
 
     return (
         <div className="relative slides-container h-[calc(100vh-4rem)] w-screen overflow-hidden">

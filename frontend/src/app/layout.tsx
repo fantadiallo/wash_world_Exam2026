@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import '@/src/styles/globals.css';
+import 'react-leaflet-cluster/dist/assets/MarkerCluster.css'
+import 'react-leaflet-cluster/dist/assets/MarkerCluster.Default.css'
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -8,12 +10,12 @@ export const metadata: Metadata = {
 
 export default function Layout({ children }) {
   return (
-    <html lang="en" className="h-full antialiased">
-      <body className="min-h-screen flex flex-col bg-(--gray-eighty)">
-        <main className="min-h-screen">
-          {children}
-        </main>
-      </body>
+    <html lang="en" className="antialiased">
+      <body className="h-screen flex flex-col bg-(--gray-eighty)" suppressHydrationWarning>
+  <main className="flex-1 overflow-y-auto">
+    {children}
+  </main>
+</body>
     </html>
   );
 }

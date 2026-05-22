@@ -1,15 +1,21 @@
-import Navigation from '@/src/components/navigation/Navigation';
+'use client'
+
+import Navigation from '../components/navigation/Navigation';
+
+import Footer from '@/src/components/layout/Footer'
 import ImageSlider from '../components/slider/ImageSlider';
-import TestConnection from '../components/TestConnection';
  
 
-export default function Home() {
-
-  
-  return (
-    <>
-      <Navigation />
-      <ImageSlider />
-    </>
-  );
+export default function Home()
+{ 
+    return (
+      <>
+        <Navigation />
+        <ImageSlider />
+        <Footer
+          address="Dynamovej 4, 2860 Søborg"
+          phone="+45 70 70 70 70"
+        />
+      </>
+    )
 }

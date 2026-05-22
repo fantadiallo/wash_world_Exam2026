@@ -1,0 +1,46 @@
+import Card from "./Card";
+import Button from "../buttons/Button";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
+import { LocationCardProps } from "@/src/types/card";
+import Heading from "../headings/Heading"
+
+export default function LocationCard({street, city, distance, lat, lng}: LocationCardProps)
+{
+    return (
+        <Card variant="location_card">
+             <div className="card-content-container flex items-center justify-between gap-4">
+                <div className="location-container flex items-center gap-2">
+                    <FontAwesomeIcon
+                        className="text-[var(--brand-green-dark-bg)] text-2xl"
+                        icon={faMapMarkerAlt}
+                    />
+
+
+                    <div className="flex flex-col">
+                        <Heading variant="location_card_heading">
+                            {street}
+                        </Heading>
+                        <p className="flex items-center gap-2 text-sm text-[var(--gray-ten)]">
+                            <span className="city">{city}</span>
+                            <span className="text-[var(--brand-green-dark-bg)]">•</span>
+                            <span className="flex gap-1">
+                                <span className="distance">{distance ?? 'Beregner ...'}</span>
+                                <span>km</span>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+
+                 <Button
+                    as="link"
+                    variant="location_card"
+                    href={`https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`}
+                    target="_blank"
+                >
+                    Find vej
+                </Button>
+             </div>
+        </Card>
+    )   
+}
