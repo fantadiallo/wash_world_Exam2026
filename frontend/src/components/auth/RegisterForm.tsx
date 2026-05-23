@@ -1,14 +1,10 @@
 "use client";
-
 import { useState } from "react";
 import Button from "../buttons/Button";
 import type { RegisterFormData } from "../../types/register";
 import Heading from "../headings/Heading";
+import { useRouter } from "next/navigation";
 
-/**
- * RegisterForm component
- * Handles user registration input and validation
- */
 export default function RegisterForm() {
   const [formData, setFormData] = useState<RegisterFormData>({
     name: "",
@@ -17,10 +13,11 @@ export default function RegisterForm() {
     password: "",
     confirmPassword: "",
   });
+  const router = useRouter();
+  const [toast, setToast] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [optimisticMessage, setOptimisticMessage] = useState("");
 
-  /**
-   * Updates form state when user types
-   */
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
 
@@ -30,62 +27,85 @@ export default function RegisterForm() {
     }));
   }
 
-  /**
-   * Handles form submission
-   */
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    if (formData.password !== formData.confirmPassword) {
-      alert("Adgangskoderne matcher ikke");
+    if (
+      !formData.name ||
+      !formData.last_name ||
+      !formData.email ||
+      !formData.password ||
+      !formData.confirmPassword
+    ) {
+      setToast("Alle felter skal udfyldes");
       return;
     }
 
+    if (formData.password !== formData.confirmPassword) {
+      setToast("Adgangskoderne matcher ikke");
+      return;
+    }
+
+    setToast("");
+    setIsSubmitting(true);
+    setOptimisticMessage("Opretter konto...");
+
     const { confirmPassword, ...dataToBackend } = formData;
 
-    try
-    {
-        const res = await fetch('http://127.0.0.1/register-user', {
-          method: 'POST',
-          headers:
-          {
-            'Content-Type': 'application/json'
-          },
+    try {
+      const res = await fetch("http://127.0.0.1/register-user", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dataToBackend),
+      });
 
-          body: JSON.stringify(dataToBackend)
-        })
+      const data = await res.json();
 
-        if(!res.ok)
-        {
-          throw new Error(`Error: ${res.status}`)
-        }
+      if (!res.ok) {
+        throw new Error(data.message || "Kunne ikke oprette konto");
+      }
 
-        const data = await res.json()
-        console.log("User created: ", dataToBackend);
+      console.log("User created:", data);
+      setOptimisticMessage("Konto oprettet! Du sendes til login...");
+
+      setTimeout(() => {
+      router.push("/login");
+      }, 1000); 
+
+    } catch (error) {
+      setToast(error instanceof Error ? error.message : "Noget gik galt");
+      setOptimisticMessage("");
+    } finally {
+      setIsSubmitting(false);
     }
-    catch(err)
-    {
-      console.error(`Error creating user: ${err}`)
-    }
-
-    
-    
   }
 
   return (
-    <div className="grid place-content-center">
+    <div className="grid place-content-center px-4 py-10">
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col h-fit rounded-md bg-white text-white p-8 min-w-[300px] w-full max-w-md"
+        className="flex flex-col h-fit rounded-2xl bg-[#202020] text-white px-8 py-10 min-w-[300px] w-[90vw] max-w-md shadow-2xl border border-[#333]"
         method="POST"
       >
-        <Heading variant="form_heading">
-          Opret bruger
-        </Heading>
+        <Heading variant="form_heading">Opret bruger</Heading>
 
-        <p className="mb-4 text-(--gray-sixty)">
+        <p className="mb-6 text-[#bdbdbd] text-lg">
           Bliv en del af Wash World
         </p>
+
+        {toast && (
+          <p className="mb-4 rounded-xl bg-red-100 px-4 py-3 text-red-700">
+            {toast}
+          </p>
+        )}
+
+        {optimisticMessage && (
+          <p className="mb-4 rounded-xl bg-green-100 px-4 py-3 text-green-700">
+            {optimisticMessage}
+          </p>
+        )}
 
         <div className="mb-6">
           <label className="block mb-2 font-bold text-(--brand-green-white-bg)">
@@ -98,7 +118,7 @@ export default function RegisterForm() {
             placeholder="Indtast fornavn"
             value={formData.name}
             onChange={handleChange}
-            className="rounded-md w-full bg-(--gray-eighty) p-4 transition-outline duration-150 ease-in focus:ring-0 focus:outline-2 focus:outline-(--brand-green-white-bg)"
+            className="rounded-xl w-full bg-[#303030] text-white placeholder:text-[#9d9d9d] p-5 transition-all duration-200 focus:ring-0 focus:outline-none focus:border focus:border-(--brand-green-white-bg)"
           />
         </div>
 
@@ -113,11 +133,10 @@ export default function RegisterForm() {
             placeholder="Indtast efternavn"
             value={formData.last_name}
             onChange={handleChange}
-            className="rounded-md w-full bg-(--gray-eighty) p-4 transition-outline duration-150 ease-in focus:ring-0 focus:outline-2 focus:outline-(--brand-green-white-bg)"
+            className="rounded-xl w-full bg-[#303030] text-white placeholder:text-[#9d9d9d] p-5 transition-all duration-200 focus:ring-0 focus:outline-none focus:border focus:border-(--brand-green-white-bg)"
           />
         </div>
 
-        {/* Original E-mail field kept */}
         <div className="mb-6">
           <label className="block mb-2 font-bold text-(--brand-green-white-bg)">
             E-mail
@@ -129,12 +148,11 @@ export default function RegisterForm() {
             placeholder="Indtast e-mail"
             value={formData.email}
             onChange={handleChange}
-            className="rounded-md w-full bg-(--gray-eighty) p-4 transition-outline duration-150 ease-in focus:ring-0 focus:outline-2 focus:outline-(--brand-green-white-bg)"
+            className="rounded-xl w-full bg-[#303030] text-white placeholder:text-[#9d9d9d] p-5 transition-all duration-200 focus:ring-0 focus:outline-none focus:border focus:border-(--brand-green-white-bg)"
           />
         </div>
 
-        {/* Original password field kept */}
-        <div className="mb-8">
+        <div className="mb-6">
           <label className="block mb-2 font-bold text-(--brand-green-white-bg)">
             Adgangskode
           </label>
@@ -145,11 +163,10 @@ export default function RegisterForm() {
             placeholder="Indtast adgangskode"
             value={formData.password}
             onChange={handleChange}
-            className="rounded-md w-full bg-(--gray-eighty) p-4 transition-outline duration-150 ease-in focus:ring-0 focus:outline-2 focus:outline-(--brand-green-white-bg)"
+            className="rounded-xl w-full bg-[#303030] text-white placeholder:text-[#9d9d9d] p-5 transition-all duration-200 focus:ring-0 focus:outline-none focus:border focus:border-(--brand-green-white-bg)"
           />
         </div>
 
-        {/* Original confirm password field kept */}
         <div className="mb-8">
           <label className="block mb-2 font-bold text-(--brand-green-white-bg)">
             Gentag adgangskode
@@ -161,23 +178,28 @@ export default function RegisterForm() {
             placeholder="Gentag adgangskode"
             value={formData.confirmPassword}
             onChange={handleChange}
-            className="rounded-md w-full bg-(--gray-eighty) p-4 transition-outline duration-150 ease-in focus:ring-0 focus:outline-2 focus:outline-(--brand-green-white-bg)"
+            className="rounded-xl w-full bg-[#303030] text-white placeholder:text-[#9d9d9d] p-5 transition-all duration-200 focus:ring-0 focus:outline-none focus:border focus:border-(--brand-green-white-bg)"
           />
         </div>
 
-     <Button 
-  text="Opret konto"
-  variant="primary"
-  className="w-full justify-center text-xl py-4"
-/>
+        <Button
+          text={isSubmitting ? "Opretter..." : "Opret konto"}
+          variant="primary"
+          type="submit"
+          disabled={isSubmitting}
+          className="w-full justify-center text-xl py-4"
+        />
 
-      <p className="text-center mt-4">
-        Har du allerede en konto?{" "}
-        <span className="text-[#06c167] underline cursor-pointer">
-          Log ind
-        </span>
-      </p>
-       </form>
-       </div>
+        <p className="text-center mt-6 text-[#bdbdbd]">
+          Har du allerede en konto?{" "}
+          <Button
+            variant="text"
+            as="link"
+            href="/login"
+            text="Log ind"
+          />
+        </p>
+      </form>
+    </div>
   );
 }

@@ -1,4 +1,3 @@
-// app/dashboard/ProfileClient.tsx
 "use client";
 
 import { useEffect, useState } from "react";
@@ -16,41 +15,77 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { memberships } from "@/src/services/memberships";
 import { faCalendar } from "@fortawesome/free-regular-svg-icons";
 import { formatDate, formatTimestamp } from "@/src/app/utils/formatters";
-// import { formatDate, formatTimestamp } from "../utils/formatters";
 
 export default function ProfileClient() {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const loadDashboardData = async () => {
+    const loadProfileData = async () => {
       try {
-        const res = await fetch("http://127.0.0.1/dashboard", {
-          credentials: "include",
+        const token = localStorage.getItem("access_token");
+
+        if (!token) {
+          throw new Error("Not logged in");
+        }
+
+        const res = await fetch("http://127.0.0.1/profile", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         });
 
-        if (!res.ok) 
-        {
-throw new Error("Not logged in")
+        if (!res.ok) {
+          throw new Error("Not logged in");
         }
 
         const data = await res.json();
-        setUser(data);
+
+        setUser(data.user);
+
       } catch (err) {
         console.error(err);
         setUser(null);
+
       } finally {
         setLoading(false);
       }
     };
 
-    loadDashboardData();
+    loadProfileData();
   }, []);
 
-  if (loading) return <p>Loading...</p>;
-  if (!user) return <p>Not logged in</p>;
+  function handleLogout() {
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("user");
+
+    window.location.href = "/login";
+  }
+
+  if (loading) {
+    return (
+      <PageContainer>
+        <Navigation />
+        <p className="text-white text-center mt-20">
+          Loading...
+        </p>
+      </PageContainer>
+    );
+  }
+
+  if (!user) {
+    return (
+      <PageContainer>
+        <Navigation />
+        <p className="text-white text-center mt-20">
+          Not logged in
+        </p>
+      </PageContainer>
+    );
+  }
 
   const membershipId = "premium";
+
   const membership = memberships.find(
     (m) => m.id === membershipId.toLowerCase()
   );
@@ -74,9 +109,12 @@ throw new Error("Not logged in")
         <div>
           <Heading>
             <h1 className="text-2xl">
-              Velkommen, {user?.first_name}
+              Velkommen, {user?.user_first_name}
             </h1>
-            <p className="text-sm">{user?.email}</p>
+
+            <p className="text-sm">
+              {user?.user_email}
+            </p>
           </Heading>
         </div>
       </Section>
@@ -98,7 +136,9 @@ throw new Error("Not logged in")
               </Heading>
 
               {membership?.features?.map((feature, index) => (
-                <li key={index}>{feature}</li>
+                <li key={index}>
+                  {feature}
+                </li>
               ))}
             </ul>
           </div>
@@ -140,7 +180,9 @@ throw new Error("Not logged in")
           <div className="relative">
             <div className="absolute top-[62%] left-[50%] -translate-[50%]">
               <p className="text-xs text-center">
-                <span className="text-(--splash-orange)">{date}</span>
+                <span className="text-(--splash-orange)">
+                  {date}
+                </span>
               </p>
             </div>
 
@@ -152,7 +194,11 @@ throw new Error("Not logged in")
         </Card>
       </Section>
 
-      <Button variant="auth">Log ud</Button>
+      <Button
+        variant="auth"
+        text="Log ud"
+        onClick={handleLogout}
+      />
     </PageContainer>
   );
 }
