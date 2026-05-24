@@ -57,7 +57,7 @@ export default function ProfileClient() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const loadProfileData = async () => {
+    async function loadProfileData() {
       try {
         const token = localStorage.getItem("access_token");
 
@@ -98,14 +98,14 @@ export default function ProfileClient() {
         }
 
         setActiveSubscription(subscriptionData.active_subscription);
-      } catch (err) {
-        console.error(err);
+      } catch (error) {
+        console.error(error);
         setUser(null);
         setActiveSubscription(null);
       } finally {
         setLoading(false);
       }
-    };
+    }
 
     loadProfileData();
   }, []);
@@ -117,19 +117,23 @@ export default function ProfileClient() {
     window.location.href = "/";
   }
 
+  const backButton = (
+    <Link
+      href="/"
+      className="text-(--solid-white) text-2xl transition-colors duration-150 ease-in hover:text-(--brand-green-dark-bg)"
+      aria-label="Tilbage til forsiden"
+    >
+      <FontAwesomeIcon icon={faArrowLeft} />
+    </Link>
+  );
+
   if (loading) {
     return (
       <>
-        <Link
-          href="/"
-          className="text-(--solid-white) text-2xl transition-colors duration-150 ease-in hover:text-(--brand-green-dark-bg)"
-          aria-label="Tilbage til forsiden"
-        >
-          <FontAwesomeIcon icon={faArrowLeft} />
-        </Link>
+        {backButton}
 
         <p className="text-white text-center mt-20">
-          Loading...
+          Loading profile...
         </p>
       </>
     );
@@ -138,13 +142,7 @@ export default function ProfileClient() {
   if (!user) {
     return (
       <>
-        <Link
-          href="/"
-          className="text-(--solid-white) text-2xl transition-colors duration-150 ease-in hover:text-(--brand-green-dark-bg)"
-          aria-label="Tilbage til forsiden"
-        >
-          <FontAwesomeIcon icon={faArrowLeft} />
-        </Link>
+        {backButton}
 
         <div className="min-h-[60vh] flex flex-col items-center justify-center text-center">
           <Heading variant="section_sub_heading_green">
@@ -168,8 +166,9 @@ export default function ProfileClient() {
     );
   }
 
-  const dateObj = new Date();
-  const date = dateObj.getDate();
+  const fullName = `${user.user_first_name} ${user.user_last_name}`;
+  const latestWashDate = new Date();
+  const latestWashDay = latestWashDate.getDate();
 
   const subscriptionIcon =
     activeSubscription?.subscription_icon &&
@@ -181,13 +180,7 @@ export default function ProfileClient() {
 
   return (
     <>
-      <Link
-        href="/"
-        className="text-(--solid-white) text-2xl transition-colors duration-150 ease-in hover:text-(--brand-green-dark-bg)"
-        aria-label="Tilbage til forsiden"
-      >
-        <FontAwesomeIcon icon={faArrowLeft} />
-      </Link>
+      {backButton}
 
       <Section variant="profile_hero">
         <Image
@@ -195,13 +188,13 @@ export default function ProfileClient() {
           height={100}
           width={100}
           src={profileImage}
-          alt="profile image"
+          alt={`${fullName} profile image`}
         />
 
         <div>
           <Heading>
             <h1 className="text-2xl text-(--solid-white)">
-              Velkommen, {user.user_first_name}
+              Velkommen, {fullName}
             </h1>
 
             <p className="text-sm text-(--solid-white)">
@@ -282,7 +275,7 @@ export default function ProfileClient() {
 
             <Heading variant="membership_status_and_date_heading">
               {formatDate({
-                date: dateObj,
+                date: latestWashDate,
                 dateTimeFormat: "da-DK",
                 dayFormat: "numeric",
                 monthFormat: "long",
@@ -293,7 +286,7 @@ export default function ProfileClient() {
               Klokken{" "}
               <span>
                 {formatTimestamp({
-                  time: dateObj,
+                  time: latestWashDate,
                   dateTimeFormat: "da-DK",
                   hourFormat: "2-digit",
                   minuteFormat: "2-digit",
@@ -306,7 +299,7 @@ export default function ProfileClient() {
             <div className="absolute top-[62%] left-[50%] -translate-[50%]">
               <p className="text-xs text-center">
                 <span className="text-(--splash-orange)">
-                  {date}
+                  {latestWashDay}
                 </span>
               </p>
             </div>
