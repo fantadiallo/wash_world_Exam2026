@@ -57,7 +57,7 @@ export default function ImageSlider()
             <Button as="link" href="/locations" variant="primary">
                 <FontAwesomeIcon icon={faMapMarkerAlt} /> <span>Find vaskehaller</span>
             </Button>
-                <Button as="link" href="/locations" variant="secondary">
+                <Button as="link" href="/memberships" variant="secondary">
                 <FontAwesomeIcon icon={faCrown} /> <span>Se medlemskaber</span>
             </Button>
         </div>

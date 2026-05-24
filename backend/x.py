@@ -7,6 +7,7 @@ from icecream import ic
 from werkzeug.utils import secure_filename
 import uuid
 from flask import jsonify
+from datetime import datetime, timedelta
 
 ic.configureOutput(prefix=f"_____ | ", includeContext=True)
 
@@ -104,6 +105,13 @@ def validate_uuid4_paranoia(uuid4):
     return uuid
 
 
+##############################
+REGEX_SUBSCRIPTION_TYPE_ID = "^[a-z0-9]{32}$"
+def validate_subscription_type_id(subscription_type_id):
+    subscription_type_id = (subscription_type_id or "").strip()
+    if not re.match(REGEX_SUBSCRIPTION_TYPE_ID, subscription_type_id):
+        raise Exception("company_exception subscription_type_id")
+    return subscription_type_id
 
 ############### HELPER METHODS ###############
 
@@ -184,3 +192,14 @@ def send_email(subject, html):
         return "cannot send email", 500
     finally:
         pass
+
+############################################## 
+def get_subscription_dates():
+    now = datetime.now()
+    renewal_date = now + timedelta(days=30)
+
+    return {
+        "created_at": now,
+        "start_date": now,
+        "renewal_date": renewal_date
+    }

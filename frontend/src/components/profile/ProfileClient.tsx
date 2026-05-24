@@ -2,22 +2,58 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import profileImage from "../../../public/images/profile_test_images/profile_test_image.jpg";
 
-import Navigation from "@/src/components/navigation/Navigation";
-import PageContainer from "@/src/components/containers/PageContainer";
 import Card from "@/src/components/cards/Card";
 import Button from "@/src/components/buttons/Button";
 import Heading from "@/src/components/headings/Heading";
 import Section from "@/src/components/sections/Section";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { memberships } from "@/src/services/memberships";
 import { faCalendar } from "@fortawesome/free-regular-svg-icons";
+import {
+  faArrowLeft,
+  faCrown,
+  faTrophy,
+  faMedal,
+} from "@fortawesome/free-solid-svg-icons";
+
 import { formatDate, formatTimestamp } from "@/src/app/utils/formatters";
+import { API_BASE_URL } from "@/src/lib/api";
+
+type ProfileUser = {
+  user_id: string;
+  user_first_name: string;
+  user_last_name: string;
+  user_email: string;
+};
+
+type ActiveSubscription = {
+  subscription_id: string;
+  user_id: string;
+  subscription_type_id: string;
+  subscription_name: string;
+  subscription_price: number;
+  subscription_description: string;
+  subscription_icon: string | null;
+  subscription_status: string;
+  subscription_created_at: string;
+  subscription_start_date: string;
+  subscription_renewal_date: string;
+  features: string[];
+};
+
+const subscriptionIconMap = {
+  faCrown: faCrown,
+  faTrophy: faTrophy,
+  faMedal: faMedal,
+};
 
 export default function ProfileClient() {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<ProfileUser | null>(null);
+  const [activeSubscription, setActiveSubscription] =
+    useState<ActiveSubscription | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -29,24 +65,43 @@ export default function ProfileClient() {
           throw new Error("Not logged in");
         }
 
-        const res = await fetch("http://127.0.0.1/profile", {
+        const profileResponse = await fetch(`${API_BASE_URL}/profile`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
 
-        if (!res.ok) {
-          throw new Error("Not logged in");
+        const profileData = await profileResponse.json();
+
+        if (!profileResponse.ok) {
+          throw new Error(profileData.message || "Not logged in");
         }
 
-        const data = await res.json();
+        const profileUser = profileData.user;
+        setUser(profileUser);
 
-        setUser(data.user);
+        const subscriptionResponse = await fetch(
+          `${API_BASE_URL}/subscriptions/user/${profileUser.user_id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
+        const subscriptionData = await subscriptionResponse.json();
+
+        if (!subscriptionResponse.ok) {
+          throw new Error(
+            subscriptionData.message || "Could not fetch subscription"
+          );
+        }
+
+        setActiveSubscription(subscriptionData.active_subscription);
       } catch (err) {
         console.error(err);
         setUser(null);
-
+        setActiveSubscription(null);
       } finally {
         setLoading(false);
       }
@@ -59,43 +114,80 @@ export default function ProfileClient() {
     localStorage.removeItem("access_token");
     localStorage.removeItem("user");
 
-    window.location.href = "/login";
+    window.location.href = "/";
   }
 
   if (loading) {
     return (
-      <PageContainer>
-        <Navigation />
+      <>
+        <Link
+          href="/"
+          className="text-(--solid-white) text-2xl transition-colors duration-150 ease-in hover:text-(--brand-green-dark-bg)"
+          aria-label="Tilbage til forsiden"
+        >
+          <FontAwesomeIcon icon={faArrowLeft} />
+        </Link>
+
         <p className="text-white text-center mt-20">
           Loading...
         </p>
-      </PageContainer>
+      </>
     );
   }
 
   if (!user) {
     return (
-      <PageContainer>
-        <Navigation />
-        <p className="text-white text-center mt-20">
-          Not logged in
-        </p>
-      </PageContainer>
+      <>
+        <Link
+          href="/"
+          className="text-(--solid-white) text-2xl transition-colors duration-150 ease-in hover:text-(--brand-green-dark-bg)"
+          aria-label="Tilbage til forsiden"
+        >
+          <FontAwesomeIcon icon={faArrowLeft} />
+        </Link>
+
+        <div className="min-h-[60vh] flex flex-col items-center justify-center text-center">
+          <Heading variant="section_sub_heading_green">
+            Du er ikke logget ind
+          </Heading>
+
+          <p className="text-(--solid-white) mt-3">
+            Log ind for at se din profil og dit medlemskab.
+          </p>
+
+          <div className="mt-6">
+            <Button
+              as="link"
+              href="/login"
+              text="Gå til login"
+              variant="membership_card"
+            />
+          </div>
+        </div>
+      </>
     );
   }
-
-  const membershipId = "premium";
-
-  const membership = memberships.find(
-    (m) => m.id === membershipId.toLowerCase()
-  );
 
   const dateObj = new Date();
   const date = dateObj.getDate();
 
+  const subscriptionIcon =
+    activeSubscription?.subscription_icon &&
+    activeSubscription.subscription_icon in subscriptionIconMap
+      ? subscriptionIconMap[
+          activeSubscription.subscription_icon as keyof typeof subscriptionIconMap
+        ]
+      : faCrown;
+
   return (
-    <PageContainer>
-      <Navigation />
+    <>
+      <Link
+        href="/"
+        className="text-(--solid-white) text-2xl transition-colors duration-150 ease-in hover:text-(--brand-green-dark-bg)"
+        aria-label="Tilbage til forsiden"
+      >
+        <FontAwesomeIcon icon={faArrowLeft} />
+      </Link>
 
       <Section variant="profile_hero">
         <Image
@@ -108,12 +200,12 @@ export default function ProfileClient() {
 
         <div>
           <Heading>
-            <h1 className="text-2xl">
-              Velkommen, {user?.user_first_name}
+            <h1 className="text-2xl text-(--solid-white)">
+              Velkommen, {user.user_first_name}
             </h1>
 
-            <p className="text-sm">
-              {user?.user_email}
+            <p className="text-sm text-(--solid-white)">
+              {user.user_email}
             </p>
           </Heading>
         </div>
@@ -126,27 +218,60 @@ export default function ProfileClient() {
               Dit medlemskab
             </Heading>
 
-            <Heading variant="membership_status_and_date_heading">
-              {membership?.name}
-            </Heading>
+            {activeSubscription ? (
+              <>
+                <Heading variant="membership_status_and_date_heading">
+                  {activeSubscription.subscription_name}
+                </Heading>
 
-            <ul className="text-(--solid-white) mt-4 space-y-1 text-sm">
-              <Heading>
-                <h4>Fordele:</h4>
-              </Heading>
+                <p className="text-sm mt-2 text-(--solid-white)">
+                  {activeSubscription.subscription_price} kr./md.
+                </p>
 
-              {membership?.features?.map((feature, index) => (
-                <li key={index}>
-                  {feature}
-                </li>
-              ))}
-            </ul>
+                <p className="text-sm mt-2 text-(--solid-white)">
+                  Status: {activeSubscription.subscription_status}
+                </p>
+
+                <ul className="text-(--solid-white) mt-4 space-y-1 text-sm">
+                  <Heading>
+                    <h4>Fordele:</h4>
+                  </Heading>
+
+                  {activeSubscription.features.map((feature, index) => (
+                    <li key={index}>
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+              </>
+            ) : (
+              <>
+                <Heading variant="membership_status_and_date_heading">
+                  Intet aktivt medlemskab
+                </Heading>
+
+                <p className="text-sm mt-2 text-(--solid-white)">
+                  Du har ikke valgt et medlemskab endnu.
+                </p>
+
+                <div className="mt-4">
+                  <Button
+                    as="link"
+                    href="/memberships"
+                    text="Vælg medlemskab"
+                    variant="membership_card"
+                  />
+                </div>
+              </>
+            )}
           </div>
 
-          <FontAwesomeIcon
-            icon={membership?.icon}
-            className="text-5xl text-(--splash-orange)"
-          />
+          {activeSubscription && (
+            <FontAwesomeIcon
+              icon={subscriptionIcon}
+              className="text-5xl text-(--splash-orange)"
+            />
+          )}
         </Card>
 
         <Card className="flex justify-between items-center">
@@ -164,7 +289,7 @@ export default function ProfileClient() {
               })}
             </Heading>
 
-            <p className="text-sm mt-2">
+            <p className="text-sm mt-2 text-(--solid-white)">
               Klokken{" "}
               <span>
                 {formatTimestamp({
@@ -194,11 +319,13 @@ export default function ProfileClient() {
         </Card>
       </Section>
 
-      <Button
-        variant="auth"
-        text="Log ud"
-        onClick={handleLogout}
-      />
-    </PageContainer>
+      <div className="mt-8 mb-16">
+        <Button
+          variant="auth"
+          text="Log ud"
+          onClick={handleLogout}
+        />
+      </div>
+    </>
   );
 }

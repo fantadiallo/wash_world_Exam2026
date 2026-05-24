@@ -1,9 +1,11 @@
 "use client";
+
 import { useState } from "react";
 import Button from "../buttons/Button";
 import type { RegisterFormData } from "../../types/register";
 import Heading from "../headings/Heading";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { API_BASE_URL } from "@/src/lib/api";
 
 export default function RegisterForm() {
   const [formData, setFormData] = useState<RegisterFormData>({
@@ -13,7 +15,11 @@ export default function RegisterForm() {
     password: "",
     confirmPassword: "",
   });
+
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const membershipId = searchParams.get("membership");
+
   const [toast, setToast] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [optimisticMessage, setOptimisticMessage] = useState("");
@@ -53,7 +59,7 @@ export default function RegisterForm() {
     const { confirmPassword, ...dataToBackend } = formData;
 
     try {
-      const res = await fetch("http://127.0.0.1/register-user", {
+      const res = await fetch(`${API_BASE_URL}/register-user`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -67,12 +73,15 @@ export default function RegisterForm() {
         throw new Error(data.message || "Kunne ikke oprette konto");
       }
 
-      console.log("User created:", data);
       setOptimisticMessage("Konto oprettet! Du sendes til login...");
 
       setTimeout(() => {
-      router.push("/login");
-      }, 1000); 
+        if (membershipId) {
+          router.push(`/login?membership=${membershipId}`);
+        } else {
+          router.push("/login");
+        }
+      }, 1000);
 
     } catch (error) {
       setToast(error instanceof Error ? error.message : "Noget gik galt");
@@ -195,7 +204,7 @@ export default function RegisterForm() {
           <Button
             variant="text"
             as="link"
-            href="/login"
+            href={membershipId ? `/login?membership=${membershipId}` : "/login"}
             text="Log ind"
           />
         </p>

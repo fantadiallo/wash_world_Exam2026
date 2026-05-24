@@ -5,14 +5,18 @@ import Button from "../buttons/Button";
 import type { LoginFormData } from "../../types/login";
 import Heading from "../headings/Heading";
 import { useAuth } from "@/src/hooks/useAuth";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function LoginForm() {
   const [formData, setFormData] = useState<LoginFormData>({
     email: "",
     password: "",
   });
+
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const membershipId = searchParams.get("membership");
+
   const { login, isLoading } = useAuth();
   const [toast, setToast] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -44,8 +48,13 @@ export default function LoginForm() {
       setOptimisticMessage("Du er logget ind!");
 
       setTimeout(() => {
-      router.push("/profile");
-    }, 1000);
+        if (membershipId) {
+          router.push(`/subscription?membership=${membershipId}`);
+        } else {
+          router.push("/profile");
+        }
+      }, 1000);
+
     } catch (error) {
       setToast(error instanceof Error ? error.message : "Noget gik galt");
       setOptimisticMessage("");
@@ -121,7 +130,7 @@ export default function LoginForm() {
           <Button
             variant="text"
             as="link"
-            href="/register"
+            href={membershipId ? `/register?membership=${membershipId}` : "/register"}
             text="Opret bruger"
           />
         </p>
