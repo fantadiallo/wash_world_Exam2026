@@ -1,58 +1,44 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Image from "next/image";
+
 import profileImage from "../../../public/images/profile_test_images/profile_test_image.jpg";
 
-import Navigation from "@/src/components/navigation/Navigation";
-import PageContainer from "@/src/components/containers/PageContainer";
 import Card from "@/src/components/cards/Card";
 import Button from "@/src/components/buttons/Button";
 import Heading from "@/src/components/headings/Heading";
 import Section from "@/src/components/sections/Section";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { memberships } from "@/src/services/memberships";
+import { faCrown } from "@fortawesome/free-solid-svg-icons";
 import { faCalendar } from "@fortawesome/free-regular-svg-icons";
+
 import { formatDate, formatTimestamp } from "@/src/app/utils/formatters";
 
+import { useAuthGuard } from "@/src/hooks/useAuthGuard";
+import { useProfile } from "@/src/hooks/useProfile";
+
 export default function ProfileClient() {
-  const [user, setUser] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+  useAuthGuard();
+
+  const { user, getProfile, isLoading } = useProfile();
+
+  const latestWashDate = new Date();
 
   useEffect(() => {
-    const loadProfileData = async () => {
+    async function loadProfile() {
       try {
-        const token = localStorage.getItem("access_token");
+        await getProfile();
 
-        if (!token) {
-          throw new Error("Not logged in");
-        }
+      } catch (error) {
+        console.error(error);
 
-        const res = await fetch("http://127.0.0.1/profile", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (!res.ok) {
-          throw new Error("Not logged in");
-        }
-
-        const data = await res.json();
-
-        setUser(data.user);
-
-      } catch (err) {
-        console.error(err);
-        setUser(null);
-
-      } finally {
-        setLoading(false);
+        window.location.href = "/login";
       }
-    };
+    }
 
-    loadProfileData();
+    loadProfile();
   }, []);
 
   function handleLogout() {
@@ -62,58 +48,39 @@ export default function ProfileClient() {
     window.location.href = "/login";
   }
 
-  if (loading) {
+  if (isLoading) {
     return (
-      <PageContainer>
-        <Navigation />
-        <p className="text-white text-center mt-20">
-          Loading...
-        </p>
-      </PageContainer>
+      <p className="text-white text-center mt-20">
+        Loading profile...
+      </p>
     );
   }
 
   if (!user) {
-    return (
-      <PageContainer>
-        <Navigation />
-        <p className="text-white text-center mt-20">
-          Not logged in
-        </p>
-      </PageContainer>
-    );
+    return null;
   }
 
-  const membershipId = "premium";
-
-  const membership = memberships.find(
-    (m) => m.id === membershipId.toLowerCase()
-  );
-
-  const dateObj = new Date();
-  const date = dateObj.getDate();
+  const fullName = `${user.user_first_name} ${user.user_last_name}`;
 
   return (
-    <PageContainer>
-      <Navigation />
-
+    <>
       <Section variant="profile_hero">
         <Image
           className="profile-image h-[90px] w-[90px] object-cover rounded-full"
           height={100}
           width={100}
           src={profileImage}
-          alt="profile image"
+          alt={`${fullName} profile image`}
         />
 
         <div>
           <Heading>
             <h1 className="text-2xl">
-              Velkommen, {user?.user_first_name}
+              Velkommen, {fullName}
             </h1>
 
             <p className="text-sm">
-              {user?.user_email}
+              {user.user_email}
             </p>
           </Heading>
         </div>
@@ -127,24 +94,16 @@ export default function ProfileClient() {
             </Heading>
 
             <Heading variant="membership_status_and_date_heading">
-              {membership?.name}
+              Guld
             </Heading>
 
-            <ul className="text-(--solid-white) mt-4 space-y-1 text-sm">
-              <Heading>
-                <h4>Fordele:</h4>
-              </Heading>
-
-              {membership?.features?.map((feature, index) => (
-                <li key={index}>
-                  {feature}
-                </li>
-              ))}
-            </ul>
+            <p className="text-(--solid-white) mt-4 text-sm">
+              Ubegrænset bilvask
+            </p>
           </div>
 
           <FontAwesomeIcon
-            icon={membership?.icon}
+            icon={faCrown}
             className="text-5xl text-(--splash-orange)"
           />
         </Card>
@@ -157,7 +116,7 @@ export default function ProfileClient() {
 
             <Heading variant="membership_status_and_date_heading">
               {formatDate({
-                date: dateObj,
+                date: latestWashDate,
                 dateTimeFormat: "da-DK",
                 dayFormat: "numeric",
                 monthFormat: "long",
@@ -168,7 +127,7 @@ export default function ProfileClient() {
               Klokken{" "}
               <span>
                 {formatTimestamp({
-                  time: dateObj,
+                  time: latestWashDate,
                   dateTimeFormat: "da-DK",
                   hourFormat: "2-digit",
                   minuteFormat: "2-digit",
@@ -177,20 +136,10 @@ export default function ProfileClient() {
             </p>
           </div>
 
-          <div className="relative">
-            <div className="absolute top-[62%] left-[50%] -translate-[50%]">
-              <p className="text-xs text-center">
-                <span className="text-(--splash-orange)">
-                  {date}
-                </span>
-              </p>
-            </div>
-
-            <FontAwesomeIcon
-              icon={faCalendar}
-              className="text-[50px] text-(--splash-orange)"
-            />
-          </div>
+          <FontAwesomeIcon
+            icon={faCalendar}
+            className="text-[50px] text-(--splash-orange)"
+          />
         </Card>
       </Section>
 
@@ -199,6 +148,6 @@ export default function ProfileClient() {
         text="Log ud"
         onClick={handleLogout}
       />
-    </PageContainer>
+    </>
   );
 }
