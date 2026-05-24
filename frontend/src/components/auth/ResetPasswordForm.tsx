@@ -1,22 +1,26 @@
 "use client";
 
 import { useState } from "react";
-import Button from "../buttons/Button";
-import type { LoginFormData } from "../../types/login";
-import Heading from "../headings/Heading";
-import { useAuth } from "@/src/hooks/useAuth";
 import { useRouter } from "next/navigation";
 
-export default function LoginForm() {
-  const [formData, setFormData] = useState<LoginFormData>({
-    email: "",
-    password: "",
-  });
+import Button from "../buttons/Button";
+import Heading from "../headings/Heading";
+
+import { useResetPassword } from "@/src/hooks/useResetPassword";
+
+export default function ResetPasswordForm() {
   const router = useRouter();
-  const { login, isLoading } = useAuth();
+
+  const [formData, setFormData] = useState({
+    reset_token: "",
+    password: "",
+    confirmPassword: "",
+  });
+
   const [toast, setToast] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [optimisticMessage, setOptimisticMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+
+  const { resetPassword, isLoading } = useResetPassword();
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
@@ -30,27 +34,37 @@ export default function LoginForm() {
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    if (!formData.email || !formData.password) {
+    if (
+      !formData.reset_token ||
+      !formData.password ||
+      !formData.confirmPassword
+    ) {
       setToast("Alle felter skal udfyldes");
       return;
     }
 
+    if (formData.password !== formData.confirmPassword) {
+      setToast("Adgangskoderne matcher ikke");
+      return;
+    }
+
     setToast("");
-    setIsSubmitting(true);
-    setOptimisticMessage("Logger ind...");
+    setSuccessMessage("");
 
     try {
-      await login(formData);
-      setOptimisticMessage("Du er logget ind!");
+      await resetPassword({
+        reset_token: formData.reset_token,
+        password: formData.password,
+      });
+
+      setSuccessMessage("Din adgangskode er blevet nulstillet.");
 
       setTimeout(() => {
-      router.push("/profile");
-    }, 1000);
+        router.push("/login");
+      }, 1500);
+
     } catch (error) {
       setToast(error instanceof Error ? error.message : "Noget gik galt");
-      setOptimisticMessage("");
-    } finally {
-      setIsSubmitting(false);
     }
   }
 
@@ -59,12 +73,13 @@ export default function LoginForm() {
       <form
         onSubmit={handleSubmit}
         className="flex flex-col h-fit rounded-2xl bg-[#202020] text-white px-8 py-10 min-w-[300px] w-[90vw] max-w-md shadow-2xl border border-[#333]"
-        method="POST"
       >
-        <Heading variant="form_heading">Log ind</Heading>
+        <Heading variant="form_heading">
+          Nulstil adgangskode
+        </Heading>
 
         <p className="mb-6 text-[#bdbdbd] text-lg">
-          Velkommen tilbage til Wash World
+          Indtast din nulstillingskode og vælg en ny adgangskode.
         </p>
 
         {toast && (
@@ -73,22 +88,22 @@ export default function LoginForm() {
           </p>
         )}
 
-        {optimisticMessage && (
+        {successMessage && (
           <p className="mb-4 rounded-xl bg-green-100 px-4 py-3 text-green-700">
-            {optimisticMessage}
+            {successMessage}
           </p>
         )}
 
         <div className="mb-6">
           <label className="block mb-2 font-bold text-(--brand-green-white-bg)">
-            E-mail
+            Nulstillingskode
           </label>
 
           <input
-            type="email"
-            name="email"
-            placeholder="Indtast e-mail"
-            value={formData.email}
+            type="text"
+            name="reset_token"
+            placeholder="Indtast nulstillingskode"
+            value={formData.reset_token}
             onChange={handleChange}
             className="rounded-xl w-full bg-[#303030] text-white placeholder:text-[#9d9d9d] p-5 transition-all duration-200 focus:ring-0 focus:outline-none focus:border focus:border-(--brand-green-white-bg)"
           />
@@ -96,46 +111,51 @@ export default function LoginForm() {
 
         <div className="mb-6">
           <label className="block mb-2 font-bold text-(--brand-green-white-bg)">
-            Adgangskode
+            Ny adgangskode
           </label>
 
           <input
             type="password"
             name="password"
-            placeholder="Indtast adgangskode"
+            placeholder="Indtast ny adgangskode"
             value={formData.password}
             onChange={handleChange}
             className="rounded-xl w-full bg-[#303030] text-white placeholder:text-[#9d9d9d] p-5 transition-all duration-200 focus:ring-0 focus:outline-none focus:border focus:border-(--brand-green-white-bg)"
           />
         </div>
 
+        <div className="mb-6">
+          <label className="block mb-2 font-bold text-(--brand-green-white-bg)">
+            Gentag adgangskode
+          </label>
+
+          <input
+            type="password"
+            name="confirmPassword"
+            placeholder="Gentag adgangskode"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            className="rounded-xl w-full bg-[#303030] text-white placeholder:text-[#9d9d9d] p-5 transition-all duration-200 focus:ring-0 focus:outline-none focus:border focus:border-(--brand-green-white-bg)"
+          />
+        </div>
+
         <Button
-          text={isSubmitting || isLoading ? "Logger ind..." : "Log ind"}
+          text={isLoading ? "Nulstiller..." : "Nulstil adgangskode"}
           variant="submit"
           type="submit"
-          disabled={isSubmitting || isLoading}
+          disabled={isLoading}
         />
 
         <p className="text-center mt-6 text-[#bdbdbd]">
-          Har du ikke en konto?{" "}
+          Tilbage til{" "}
           <Button
             variant="text"
             as="link"
-            href="/register"
-            text="Opret bruger"
+            href="/login"
+            text="log ind"
           />
         </p>
       </form>
-
-      <p className="text-(--solid-white) text-center">
-        Har du{" "}
-        <Button
-          variant="text"
-          as="link"
-          href="/forgot-password"
-          text="glemt din adgangskode?"
-        />
-      </p>
     </div>
   );
 }
