@@ -4,7 +4,7 @@ import { useState } from "react";
 import Button from "../buttons/Button";
 import type { RegisterFormData } from "../../types/register";
 import Heading from "../headings/Heading";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { API_BASE_URL } from "@/src/lib/api";
 
 export default function RegisterForm() {
@@ -17,8 +17,6 @@ export default function RegisterForm() {
   });
 
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const membershipId = searchParams.get("membership");
 
   const [toast, setToast] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -76,11 +74,7 @@ export default function RegisterForm() {
       setOptimisticMessage("Konto oprettet! Du sendes til login...");
 
       setTimeout(() => {
-        if (membershipId) {
-          router.push(`/login?membership=${membershipId}`);
-        } else {
-          router.push("/login");
-        }
+        router.push("/login");
       }, 1000);
 
     } catch (error) {
@@ -204,7 +198,7 @@ export default function RegisterForm() {
           <Button
             variant="text"
             as="link"
-            href={membershipId ? `/login?membership=${membershipId}` : "/login"}
+            href="/login"
             text="Log ind"
           />
         </p>

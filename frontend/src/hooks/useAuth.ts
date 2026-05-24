@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { API_BASE_URL } from "@/src/lib/api";
 
 type LoginData = {
   email: string;
@@ -14,8 +15,7 @@ export function useAuth() {
     setIsLoading(true);
 
     try {
-      const response = await fetch("http://127.0.0.1/login-user", {
-        method: "POST",
+      const response = await fetch(`${API_BASE_URL}/login-user`, {        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },

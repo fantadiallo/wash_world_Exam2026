@@ -130,7 +130,7 @@ export default function LoginForm() {
           <Button
             variant="text"
             as="link"
-            href={membershipId ? `/register?membership=${membershipId}` : "/register"}
+            href="/register"
             text="Opret bruger"
           />
         </p>
