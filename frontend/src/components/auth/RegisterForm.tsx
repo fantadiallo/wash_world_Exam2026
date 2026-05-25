@@ -16,6 +16,18 @@ export default function RegisterForm() {
     confirmPassword: "",
   });
 
+  const [errors, setErrors] = useState({
+    name: "",
+    last_name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] =
+    useState(false);
+
   const router = useRouter();
 
   const [toast, setToast] = useState("");
@@ -29,24 +41,47 @@ export default function RegisterForm() {
       ...prev,
       [name]: value,
     }));
+
+    setErrors((prev) => ({
+      ...prev,
+      [name]: "",
+    }));
   }
 
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(
+    event: React.FormEvent<HTMLFormElement>
+  ) {
     event.preventDefault();
 
-    if (
-      !formData.name ||
-      !formData.last_name ||
-      !formData.email ||
-      !formData.password ||
-      !formData.confirmPassword
-    ) {
-      setToast("Alle felter skal udfyldes");
-      return;
-    }
+    if (isSubmitting) return;
 
-    if (formData.password !== formData.confirmPassword) {
-      setToast("Adgangskoderne matcher ikke");
+    const newErrors = {
+      name: !formData.name ? "Fornavn er påkrævet" : "",
+      last_name: !formData.last_name
+        ? "Efternavn er påkrævet"
+        : "",
+      email: !formData.email ? "E-mail er påkrævet" : "",
+      password: !formData.password
+        ? "Adgangskode er påkrævet"
+        : "",
+      confirmPassword: !formData.confirmPassword
+        ? "Bekræft adgangskode"
+        : formData.password !== formData.confirmPassword
+        ? "Adgangskoderne matcher ikke"
+        : "",
+    };
+
+    setErrors(newErrors);
+
+    if (
+      newErrors.name ||
+      newErrors.last_name ||
+      newErrors.email ||
+      newErrors.password ||
+      newErrors.confirmPassword
+    ) {
+      setToast("");
+      setOptimisticMessage("");
       return;
     }
 
@@ -57,29 +92,42 @@ export default function RegisterForm() {
     const { confirmPassword, ...dataToBackend } = formData;
 
     try {
-      const res = await fetch(`${API_BASE_URL}/register-user`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(dataToBackend),
-      });
+      const res = await fetch(
+        `${API_BASE_URL}/register-user`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(dataToBackend),
+        }
+      );
 
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.message || "Kunne ikke oprette konto");
+        throw new Error(
+          data.message || "Kunne ikke oprette konto"
+        );
       }
 
-      setOptimisticMessage("Konto oprettet! Du sendes til login...");
+      setOptimisticMessage(
+        "Konto oprettet! Velkomstmail sendt. Du sendes til login..."
+      );
 
       setTimeout(() => {
         router.push("/login");
       }, 1000);
 
     } catch (error) {
-      setToast(error instanceof Error ? error.message : "Noget gik galt");
+      setToast(
+        error instanceof Error
+          ? error.message
+          : "Noget gik galt"
+      );
+
       setOptimisticMessage("");
+
     } finally {
       setIsSubmitting(false);
     }
@@ -92,7 +140,9 @@ export default function RegisterForm() {
         className="flex flex-col h-fit rounded-2xl bg-[#202020] text-white px-8 py-10 min-w-[300px] w-[90vw] max-w-md shadow-2xl border border-[#333]"
         method="POST"
       >
-        <Heading variant="form_heading">Opret bruger</Heading>
+        <Heading variant="form_heading">
+          Opret bruger
+        </Heading>
 
         <p className="mb-6 text-[#bdbdbd] text-lg">
           Bliv en del af Wash World
@@ -101,12 +151,6 @@ export default function RegisterForm() {
         {toast && (
           <p className="mb-4 rounded-xl bg-red-100 px-4 py-3 text-red-700">
             {toast}
-          </p>
-        )}
-
-        {optimisticMessage && (
-          <p className="mb-4 rounded-xl bg-green-100 px-4 py-3 text-green-700">
-            {optimisticMessage}
           </p>
         )}
 
@@ -123,6 +167,12 @@ export default function RegisterForm() {
             onChange={handleChange}
             className="rounded-xl w-full bg-[#303030] text-white placeholder:text-[#9d9d9d] p-5 transition-all duration-200 focus:ring-0 focus:outline-none focus:border focus:border-(--brand-green-white-bg)"
           />
+
+          {errors.name && (
+            <p className="mt-2 text-sm text-red-400">
+              {errors.name}
+            </p>
+          )}
         </div>
 
         <div className="mb-6">
@@ -138,6 +188,12 @@ export default function RegisterForm() {
             onChange={handleChange}
             className="rounded-xl w-full bg-[#303030] text-white placeholder:text-[#9d9d9d] p-5 transition-all duration-200 focus:ring-0 focus:outline-none focus:border focus:border-(--brand-green-white-bg)"
           />
+
+          {errors.last_name && (
+            <p className="mt-2 text-sm text-red-400">
+              {errors.last_name}
+            </p>
+          )}
         </div>
 
         <div className="mb-6">
@@ -153,6 +209,12 @@ export default function RegisterForm() {
             onChange={handleChange}
             className="rounded-xl w-full bg-[#303030] text-white placeholder:text-[#9d9d9d] p-5 transition-all duration-200 focus:ring-0 focus:outline-none focus:border focus:border-(--brand-green-white-bg)"
           />
+
+          {errors.email && (
+            <p className="mt-2 text-sm text-red-400">
+              {errors.email}
+            </p>
+          )}
         </div>
 
         <div className="mb-6">
@@ -160,14 +222,32 @@ export default function RegisterForm() {
             Adgangskode
           </label>
 
-          <input
-            type="password"
-            name="password"
-            placeholder="Indtast adgangskode"
-            value={formData.password}
-            onChange={handleChange}
-            className="rounded-xl w-full bg-[#303030] text-white placeholder:text-[#9d9d9d] p-5 transition-all duration-200 focus:ring-0 focus:outline-none focus:border focus:border-(--brand-green-white-bg)"
-          />
+          <div className="relative">
+            <input
+              type={showPassword ? "text" : "password"}
+              name="password"
+              placeholder="Indtast adgangskode"
+              value={formData.password}
+              onChange={handleChange}
+              className="rounded-xl w-full bg-[#303030] text-white placeholder:text-[#9d9d9d] p-5 pr-20 transition-all duration-200 focus:ring-0 focus:outline-none focus:border focus:border-(--brand-green-white-bg)"
+            />
+
+            <button
+              type="button"
+              onClick={() =>
+                setShowPassword(!showPassword)
+              }
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-[#bdbdbd]"
+            >
+              {showPassword ? "Hide" : "Show"}
+            </button>
+          </div>
+
+          {errors.password && (
+            <p className="mt-2 text-sm text-red-400">
+              {errors.password}
+            </p>
+          )}
         </div>
 
         <div className="mb-8">
@@ -175,23 +255,55 @@ export default function RegisterForm() {
             Gentag adgangskode
           </label>
 
-          <input
-            type="password"
-            name="confirmPassword"
-            placeholder="Gentag adgangskode"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            className="rounded-xl w-full bg-[#303030] text-white placeholder:text-[#9d9d9d] p-5 transition-all duration-200 focus:ring-0 focus:outline-none focus:border focus:border-(--brand-green-white-bg)"
-          />
+          <div className="relative">
+            <input
+              type={
+                showConfirmPassword ? "text" : "password"
+              }
+              name="confirmPassword"
+              placeholder="Gentag adgangskode"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              className="rounded-xl w-full bg-[#303030] text-white placeholder:text-[#9d9d9d] p-5 pr-20 transition-all duration-200 focus:ring-0 focus:outline-none focus:border focus:border-(--brand-green-white-bg)"
+            />
+
+            <button
+              type="button"
+              onClick={() =>
+                setShowConfirmPassword(
+                  !showConfirmPassword
+                )
+              }
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-[#bdbdbd]"
+            >
+              {showConfirmPassword ? "Hide" : "Show"}
+            </button>
+          </div>
+
+          {errors.confirmPassword && (
+            <p className="mt-2 text-sm text-red-400">
+              {errors.confirmPassword}
+            </p>
+          )}
         </div>
 
         <Button
-          text={isSubmitting ? "Opretter..." : "Opret konto"}
+          text={
+            isSubmitting
+              ? "Opretter..."
+              : "Opret konto"
+          }
           variant="primary"
           type="submit"
           disabled={isSubmitting}
           className="w-full justify-center text-xl py-4"
         />
+
+        {optimisticMessage && (
+          <p className="mt-4 rounded-xl bg-green-100 px-4 py-3 text-green-700 text-center">
+            {optimisticMessage}
+          </p>
+        )}
 
         <p className="text-center mt-6 text-[#bdbdbd]">
           Har du allerede en konto?{" "}

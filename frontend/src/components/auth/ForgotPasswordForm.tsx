@@ -7,21 +7,32 @@ import { useForgotPassword } from "@/src/hooks/useForgotPassword";
 
 export default function ForgotPasswordForm() {
   const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
   const [toast, setToast] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
   const { forgotPassword, isLoading } = useForgotPassword();
 
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setEmail(event.target.value);
+    setEmailError("");
+  }
+
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
+    if (isLoading) return;
+
     if (!email) {
-      setToast("Indtast din e-mail");
+      setEmailError("E-mail er påkrævet");
+      setToast("");
+      setSuccessMessage("");
       return;
     }
 
+    setEmailError("");
     setToast("");
-    setSuccessMessage("");
+    setSuccessMessage("Sender nulstillingskode...");
 
     try {
       await forgotPassword(email);
@@ -31,6 +42,7 @@ export default function ForgotPasswordForm() {
       );
     } catch (error) {
       setToast(error instanceof Error ? error.message : "Noget gik galt");
+      setSuccessMessage("");
     }
   }
 
@@ -52,12 +64,6 @@ export default function ForgotPasswordForm() {
           </p>
         )}
 
-        {successMessage && (
-          <p className="mb-4 rounded-xl bg-green-100 px-4 py-3 text-green-700">
-            {successMessage}
-          </p>
-        )}
-
         <div className="mb-6">
           <label className="block mb-2 font-bold text-(--brand-green-white-bg)">
             E-mail
@@ -68,9 +74,13 @@ export default function ForgotPasswordForm() {
             name="email"
             placeholder="Indtast e-mail"
             value={email}
-            onChange={(event) => setEmail(event.target.value)}
+            onChange={handleChange}
             className="rounded-xl w-full bg-[#303030] text-white placeholder:text-[#9d9d9d] p-5 transition-all duration-200 focus:ring-0 focus:outline-none focus:border focus:border-(--brand-green-white-bg)"
           />
+
+          {emailError && (
+            <p className="mt-2 text-sm text-red-400">{emailError}</p>
+          )}
         </div>
 
         <Button
@@ -79,6 +89,12 @@ export default function ForgotPasswordForm() {
           type="submit"
           disabled={isLoading}
         />
+
+        {successMessage && (
+          <p className="mt-4 rounded-xl bg-green-100 px-4 py-3 text-green-700 text-center">
+            {successMessage}
+          </p>
+        )}
 
         <p className="text-center mt-6 text-[#bdbdbd]">
           Har du allerede en kode?{" "}

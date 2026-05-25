@@ -7,7 +7,7 @@ import type { ForgotPasswordData } from "@/src/types/forgotPassword";
 export function useForgotPassword() {
   const [isLoading, setIsLoading] = useState(false);
 
-  async function forgotPassword(data: ForgotPasswordData) {
+  async function forgotPassword(email: string) {
     setIsLoading(true);
 
     try {
@@ -16,7 +16,7 @@ export function useForgotPassword() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ email }),
       });
 
       const responseData = await response.json();

@@ -13,11 +13,19 @@ export default function LoginForm() {
     password: "",
   });
 
+  const [errors, setErrors] = useState({
+    email: "",
+    password: "",
+  });
+
+  const [showPassword, setShowPassword] = useState(false);
+
   const router = useRouter();
   const searchParams = useSearchParams();
   const membershipId = searchParams.get("membership");
 
   const { login, isLoading } = useAuth();
+
   const [toast, setToast] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [optimisticMessage, setOptimisticMessage] = useState("");
@@ -29,13 +37,28 @@ export default function LoginForm() {
       ...prev,
       [name]: value,
     }));
+
+    setErrors((prev) => ({
+      ...prev,
+      [name]: "",
+    }));
   }
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    if (!formData.email || !formData.password) {
-      setToast("Alle felter skal udfyldes");
+    if (isSubmitting || isLoading) return;
+
+    const newErrors = {
+      email: !formData.email ? "E-mail er påkrævet" : "",
+      password: !formData.password ? "Adgangskode er påkrævet" : "",
+    };
+
+    setErrors(newErrors);
+
+    if (newErrors.email || newErrors.password) {
+      setToast("");
+      setOptimisticMessage("");
       return;
     }
 
@@ -45,6 +68,7 @@ export default function LoginForm() {
 
     try {
       await login(formData);
+
       setOptimisticMessage("Du er logget ind!");
 
       setTimeout(() => {
@@ -82,12 +106,6 @@ export default function LoginForm() {
           </p>
         )}
 
-        {optimisticMessage && (
-          <p className="mb-4 rounded-xl bg-green-100 px-4 py-3 text-green-700">
-            {optimisticMessage}
-          </p>
-        )}
-
         <div className="mb-6">
           <label className="block mb-2 font-bold text-(--brand-green-white-bg)">
             E-mail
@@ -101,6 +119,12 @@ export default function LoginForm() {
             onChange={handleChange}
             className="rounded-xl w-full bg-[#303030] text-white placeholder:text-[#9d9d9d] p-5 transition-all duration-200 focus:ring-0 focus:outline-none focus:border focus:border-(--brand-green-white-bg)"
           />
+
+          {errors.email && (
+            <p className="mt-2 text-sm text-red-400">
+              {errors.email}
+            </p>
+          )}
         </div>
 
         <div className="mb-6">
@@ -108,14 +132,30 @@ export default function LoginForm() {
             Adgangskode
           </label>
 
-          <input
-            type="password"
-            name="password"
-            placeholder="Indtast adgangskode"
-            value={formData.password}
-            onChange={handleChange}
-            className="rounded-xl w-full bg-[#303030] text-white placeholder:text-[#9d9d9d] p-5 transition-all duration-200 focus:ring-0 focus:outline-none focus:border focus:border-(--brand-green-white-bg)"
-          />
+          <div className="relative">
+            <input
+              type={showPassword ? "text" : "password"}
+              name="password"
+              placeholder="Indtast adgangskode"
+              value={formData.password}
+              onChange={handleChange}
+              className="rounded-xl w-full bg-[#303030] text-white placeholder:text-[#9d9d9d] p-5 pr-20 transition-all duration-200 focus:ring-0 focus:outline-none focus:border focus:border-(--brand-green-white-bg)"
+            />
+
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-[#bdbdbd]"
+            >
+              {showPassword ? "Hide" : "Show"}
+            </button>
+          </div>
+
+          {errors.password && (
+            <p className="mt-2 text-sm text-red-400">
+              {errors.password}
+            </p>
+          )}
         </div>
 
         <Button
@@ -124,6 +164,12 @@ export default function LoginForm() {
           type="submit"
           disabled={isSubmitting || isLoading}
         />
+
+        {optimisticMessage && (
+          <p className="mt-4 rounded-xl bg-green-100 px-4 py-3 text-green-700 text-center">
+            {optimisticMessage}
+          </p>
+        )}
 
         <p className="text-center mt-6 text-[#bdbdbd]">
           Har du ikke en konto?{" "}

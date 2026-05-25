@@ -17,8 +17,18 @@ export default function ResetPasswordForm() {
     confirmPassword: "",
   });
 
+  const [errors, setErrors] = useState({
+    reset_token: "",
+    password: "",
+    confirmPassword: "",
+  });
+
   const [toast, setToast] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] =
+    useState(false);
 
   const { resetPassword, isLoading } = useResetPassword();
 
@@ -29,27 +39,48 @@ export default function ResetPasswordForm() {
       ...prev,
       [name]: value,
     }));
+
+    setErrors((prev) => ({
+      ...prev,
+      [name]: "",
+    }));
   }
 
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(
+    event: React.FormEvent<HTMLFormElement>
+  ) {
     event.preventDefault();
 
-    if (
-      !formData.reset_token ||
-      !formData.password ||
-      !formData.confirmPassword
-    ) {
-      setToast("Alle felter skal udfyldes");
-      return;
-    }
+    if (isLoading) return;
 
-    if (formData.password !== formData.confirmPassword) {
-      setToast("Adgangskoderne matcher ikke");
+    const newErrors = {
+      reset_token: !formData.reset_token
+        ? "Nulstillingskode er påkrævet"
+        : "",
+      password: !formData.password
+        ? "Ny adgangskode er påkrævet"
+        : "",
+      confirmPassword: !formData.confirmPassword
+        ? "Bekræft adgangskode"
+        : formData.password !== formData.confirmPassword
+        ? "Adgangskoderne matcher ikke"
+        : "",
+    };
+
+    setErrors(newErrors);
+
+    if (
+      newErrors.reset_token ||
+      newErrors.password ||
+      newErrors.confirmPassword
+    ) {
+      setToast("");
+      setSuccessMessage("");
       return;
     }
 
     setToast("");
-    setSuccessMessage("");
+    setSuccessMessage("Nulstiller adgangskode...");
 
     try {
       await resetPassword({
@@ -57,14 +88,22 @@ export default function ResetPasswordForm() {
         password: formData.password,
       });
 
-      setSuccessMessage("Din adgangskode er blevet nulstillet.");
+      setSuccessMessage(
+        "Din adgangskode er blevet nulstillet."
+      );
 
       setTimeout(() => {
         router.push("/login");
       }, 1500);
 
     } catch (error) {
-      setToast(error instanceof Error ? error.message : "Noget gik galt");
+      setToast(
+        error instanceof Error
+          ? error.message
+          : "Noget gik galt"
+      );
+
+      setSuccessMessage("");
     }
   }
 
@@ -88,12 +127,6 @@ export default function ResetPasswordForm() {
           </p>
         )}
 
-        {successMessage && (
-          <p className="mb-4 rounded-xl bg-green-100 px-4 py-3 text-green-700">
-            {successMessage}
-          </p>
-        )}
-
         <div className="mb-6">
           <label className="block mb-2 font-bold text-(--brand-green-white-bg)">
             Nulstillingskode
@@ -107,6 +140,12 @@ export default function ResetPasswordForm() {
             onChange={handleChange}
             className="rounded-xl w-full bg-[#303030] text-white placeholder:text-[#9d9d9d] p-5 transition-all duration-200 focus:ring-0 focus:outline-none focus:border focus:border-(--brand-green-white-bg)"
           />
+
+          {errors.reset_token && (
+            <p className="mt-2 text-sm text-red-400">
+              {errors.reset_token}
+            </p>
+          )}
         </div>
 
         <div className="mb-6">
@@ -114,14 +153,32 @@ export default function ResetPasswordForm() {
             Ny adgangskode
           </label>
 
-          <input
-            type="password"
-            name="password"
-            placeholder="Indtast ny adgangskode"
-            value={formData.password}
-            onChange={handleChange}
-            className="rounded-xl w-full bg-[#303030] text-white placeholder:text-[#9d9d9d] p-5 transition-all duration-200 focus:ring-0 focus:outline-none focus:border focus:border-(--brand-green-white-bg)"
-          />
+          <div className="relative">
+            <input
+              type={showPassword ? "text" : "password"}
+              name="password"
+              placeholder="Indtast ny adgangskode"
+              value={formData.password}
+              onChange={handleChange}
+              className="rounded-xl w-full bg-[#303030] text-white placeholder:text-[#9d9d9d] p-5 pr-20 transition-all duration-200 focus:ring-0 focus:outline-none focus:border focus:border-(--brand-green-white-bg)"
+            />
+
+            <button
+              type="button"
+              onClick={() =>
+                setShowPassword(!showPassword)
+              }
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-[#bdbdbd]"
+            >
+              {showPassword ? "Hide" : "Show"}
+            </button>
+          </div>
+
+          {errors.password && (
+            <p className="mt-2 text-sm text-red-400">
+              {errors.password}
+            </p>
+          )}
         </div>
 
         <div className="mb-6">
@@ -129,22 +186,54 @@ export default function ResetPasswordForm() {
             Gentag adgangskode
           </label>
 
-          <input
-            type="password"
-            name="confirmPassword"
-            placeholder="Gentag adgangskode"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            className="rounded-xl w-full bg-[#303030] text-white placeholder:text-[#9d9d9d] p-5 transition-all duration-200 focus:ring-0 focus:outline-none focus:border focus:border-(--brand-green-white-bg)"
-          />
+          <div className="relative">
+            <input
+              type={
+                showConfirmPassword ? "text" : "password"
+              }
+              name="confirmPassword"
+              placeholder="Gentag adgangskode"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              className="rounded-xl w-full bg-[#303030] text-white placeholder:text-[#9d9d9d] p-5 pr-20 transition-all duration-200 focus:ring-0 focus:outline-none focus:border focus:border-(--brand-green-white-bg)"
+            />
+
+            <button
+              type="button"
+              onClick={() =>
+                setShowConfirmPassword(
+                  !showConfirmPassword
+                )
+              }
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-[#bdbdbd]"
+            >
+              {showConfirmPassword ? "Hide" : "Show"}
+            </button>
+          </div>
+
+          {errors.confirmPassword && (
+            <p className="mt-2 text-sm text-red-400">
+              {errors.confirmPassword}
+            </p>
+          )}
         </div>
 
         <Button
-          text={isLoading ? "Nulstiller..." : "Nulstil adgangskode"}
+          text={
+            isLoading
+              ? "Nulstiller..."
+              : "Nulstil adgangskode"
+          }
           variant="submit"
           type="submit"
           disabled={isLoading}
         />
+
+        {successMessage && (
+          <p className="mt-4 rounded-xl bg-green-100 px-4 py-3 text-green-700 text-center">
+            {successMessage}
+          </p>
+        )}
 
         <p className="text-center mt-6 text-[#bdbdbd]">
           Tilbage til{" "}

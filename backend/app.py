@@ -57,9 +57,6 @@ def register_user():
 
         user_id = uuid.uuid4().hex
         hashed_password = generate_password_hash(user_password)
-        verification_key = uuid.uuid4().hex
-        user_verified_at = 0
-
         db, cursor = x.db()
 
         cursor.execute(
@@ -82,28 +79,26 @@ def register_user():
             user_last_name,
             user_email,
             hashed_password,
-            verification_key,
-            user_verified_at,
+            None,
+            None,
             None,
             None
         ))
 
         db.commit()
 
-        verify_link = f"http://127.0.0.1:5000/verify/{verification_key}"
-
+      
         html = f"""
-            <h1>Welcome to Wash World</h1>
-            <p>Hi {user_first_name}, your account has been created.</p>
-            <p>Please verify your account by clicking the link below:</p>
-            <a href="{verify_link}">Verify account</a>
+        <h1>Welcome to Wash World</h1>
+        <p>Hi {user_first_name}, your account has been created.</p>
+        <p>You can now log in and use your account.</p>
         """
 
         send_email(user_email, "Welcome to Wash World", html)
 
         return jsonify({
             "success": True,
-            "message": "User registered successfully. Please check your email to verify your account.",
+            "message": "User registered successfully. Welcome email sent.",
             "user": {
                 "user_id": user_id,
                 "first_name": user_first_name,
@@ -136,64 +131,6 @@ def register_user():
             db.close()
 
 
-@app.get("/verify/<verification_key>")
-def verify_account(verification_key):
-    try:
-        verification_key = verification_key.strip()
-
-        if not verification_key:
-            return jsonify({
-                "success": False,
-                "message": "Invalid verification key"
-            }), 400
-
-        db, cursor = x.db()
-
-        cursor.execute("""
-            SELECT user_id, user_verified_at
-            FROM users
-            WHERE user_verification_key = %s
-            LIMIT 1
-        """, (verification_key,))
-
-        user = cursor.fetchone()
-
-        if user is None:
-            return jsonify({
-                "success": False,
-                "message": "Invalid verification key"
-            }), 400
-
-        if user["user_verified_at"] != 0:
-            return jsonify({
-                "success": True,
-                "message": "Account already verified"
-            }), 200
-
-        verified_at = int(time.time())
-
-        cursor.execute("""
-            UPDATE users
-            SET user_verified_at = %s
-            WHERE user_id = %s
-        """, (verified_at, user["user_id"]))
-
-        db.commit()
-
-        return jsonify({
-            "success": True,
-            "message": "Account verified successfully"
-        }), 200
-
-    except Exception as ex:
-        ic(ex)
-        return jsonify({"success": False, "message": str(ex)}), 500
-
-    finally:
-        if "cursor" in locals():
-            cursor.close()
-        if "db" in locals():
-            db.close()
 
 
 @app.post("/login-user")
@@ -212,8 +149,7 @@ def login_user():
                 user_first_name,
                 user_last_name,
                 user_email,
-                user_hashed_password,
-                user_verified_at
+                user_hashed_password
             FROM users
             WHERE user_email = %s
             LIMIT 1
@@ -228,11 +164,6 @@ def login_user():
         if not check_password_hash(user["user_hashed_password"], user_password):
             return jsonify({"success": False, "message": "Invalid email or password"}), 401
 
-        if user["user_verified_at"] == 0:
-            return jsonify({
-                "success": False,
-                "message": "Please verify your email before logging in"
-            }), 403
 
         access_token = create_access_token(identity=user["user_id"])
 

@@ -2,8 +2,6 @@
 import type { ResetPasswordData } from "@/src/types/resetPassword";
 import { useState } from "react";
 
-
-
 export function useResetPassword() {
   const [isLoading, setIsLoading] = useState(false);
 
@@ -19,13 +17,14 @@ export function useResetPassword() {
         body: JSON.stringify(resetData),
       });
 
-      const data = await response.json();
+      const responseData = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || "Noget gik galt");
+        throw new Error(responseData.message || "Noget gik galt");
       }
 
-      return data;
+      return responseData;
+
     } finally {
       setIsLoading(false);
     }
