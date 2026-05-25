@@ -264,7 +264,7 @@ def forgot_password():
         if "db" in locals():
             db.close()
 
-
+###########################################
 @app.post("/reset-password")
 def reset_password():
     try:
@@ -336,7 +336,7 @@ def reset_password():
         if "db" in locals():
             db.close()
 
-
+#############################################
 @app.get("/profile")
 @jwt_required()
 @x.no_cache
@@ -390,7 +390,6 @@ def get_subscription_types():
                 st.subscription_type_id,
                 st.subscription_name,
                 st.subscription_price,
-                st.subscription_description,
                 sp.perk_text
             FROM subscription_types st
             LEFT JOIN subscription_perks sp
@@ -417,7 +416,8 @@ def get_subscription_types():
                     "id": row["subscription_type_id"],
                     "name": row["subscription_name"],
                     "price": float(row["subscription_price"]) if row["subscription_price"] is not None else 0,
-                    "description": row["subscription_description"],
+                    "description": "",
+                    "icon": None,
                     "features": []
                 }
 
@@ -433,6 +433,7 @@ def get_subscription_types():
 
     except Exception as ex:
         ic(ex)
+
         return jsonify({
             "success": False,
             "message": "Could not fetch subscription types",
@@ -442,10 +443,9 @@ def get_subscription_types():
     finally:
         if "cursor" in locals():
             cursor.close()
+
         if "db" in locals():
             db.close()
-
-
 ###########################################################
 
 @app.post("/subscriptions")
@@ -487,7 +487,6 @@ def create_subscription():
                 subscription_type_id,
                 subscription_name,
                 subscription_price,
-                subscription_description
             FROM subscription_types
             WHERE subscription_type_id = %s
             LIMIT 1
@@ -600,11 +599,15 @@ def create_subscription():
 @jwt_required()
 def get_subscriptions_by_user(user_id):
     try:
-        requested_user_id = x.validate_uuid4(user_id)
+        requested_user_id = user_id.strip()
         token_user_id = get_jwt_identity()
 
-        # Security check:
-        # The user in the URL must be the same user as the one in the JWT token.
+        if len(requested_user_id) != 32:
+            return jsonify({
+                "success": False,
+                "message": "Invalid user id"
+            }), 400
+
         if requested_user_id != token_user_id:
             return jsonify({
                 "success": False,
@@ -613,7 +616,6 @@ def get_subscriptions_by_user(user_id):
 
         db, cursor = x.db()
 
-        # 1. Check that the user exists
         q_user = """
             SELECT 
                 user_id,
@@ -634,7 +636,6 @@ def get_subscriptions_by_user(user_id):
                 "message": "User not found"
             }), 404
 
-        # 2. Fetch subscriptions for this user
         q_subscriptions = """
             SELECT
                 s.subscription_id,
@@ -644,12 +645,8 @@ def get_subscriptions_by_user(user_id):
                 s.subscription_created_at,
                 s.subscription_start_date,
                 s.subscription_renewal_date,
-
                 st.subscription_name,
                 st.subscription_price,
-                st.subscription_description,
-                st.subscription_icon,
-
                 sp.perk_text
             FROM subscriptions s
             JOIN subscription_types st
@@ -675,8 +672,8 @@ def get_subscriptions_by_user(user_id):
                     "subscription_type_id": row["subscription_type_id"],
                     "subscription_name": row["subscription_name"],
                     "subscription_price": float(row["subscription_price"]) if row["subscription_price"] is not None else 0,
-                    "subscription_description": row["subscription_description"],
-                    "subscription_icon": row["subscription_icon"],
+                    "subscription_description": "",
+                    "subscription_icon": None,
                     "subscription_status": row["subscription_status"],
                     "subscription_created_at": row["subscription_created_at"].isoformat() if row["subscription_created_at"] else None,
                     "subscription_start_date": row["subscription_start_date"].isoformat() if row["subscription_start_date"] else None,
@@ -712,12 +709,6 @@ def get_subscriptions_by_user(user_id):
 
     except Exception as ex:
         ic(ex)
-
-        if "company_exception uuid4 invalid" in str(ex):
-            return jsonify({
-                "success": False,
-                "message": "Invalid user id"
-            }), 400
 
         return jsonify({
             "success": False,

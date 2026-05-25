@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import type { ForgotPasswordData } from "@/src/types/forgotPassword";
 
+
 export function useForgotPassword() {
   const [isLoading, setIsLoading] = useState(false);
 

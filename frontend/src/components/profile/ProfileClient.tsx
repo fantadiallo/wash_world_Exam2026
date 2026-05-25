@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+
 import profileImage from "../../../public/images/profile_test_images/profile_test_image.jpg";
 
 import Card from "@/src/components/cards/Card";
@@ -12,6 +13,7 @@ import Section from "@/src/components/sections/Section";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendar } from "@fortawesome/free-regular-svg-icons";
+
 import {
   faArrowLeft,
   faCrown,
@@ -19,7 +21,11 @@ import {
   faMedal,
 } from "@fortawesome/free-solid-svg-icons";
 
-import { formatDate, formatTimestamp } from "@/src/app/utils/formatters";
+import {
+  formatDate,
+  formatTimestamp,
+} from "@/src/app/utils/formatters";
+
 import { API_BASE_URL } from "@/src/lib/api";
 
 type ProfileUser = {
@@ -52,8 +58,10 @@ const subscriptionIconMap = {
 
 export default function ProfileClient() {
   const [user, setUser] = useState<ProfileUser | null>(null);
+
   const [activeSubscription, setActiveSubscription] =
     useState<ActiveSubscription | null>(null);
+
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -65,19 +73,25 @@ export default function ProfileClient() {
           throw new Error("Not logged in");
         }
 
-        const profileResponse = await fetch(`${API_BASE_URL}/profile`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const profileResponse = await fetch(
+          `${API_BASE_URL}/profile`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         const profileData = await profileResponse.json();
 
         if (!profileResponse.ok) {
-          throw new Error(profileData.message || "Not logged in");
+          throw new Error(
+            profileData.message || "Not logged in"
+          );
         }
 
         const profileUser = profileData.user;
+
         setUser(profileUser);
 
         const subscriptionResponse = await fetch(
@@ -89,19 +103,29 @@ export default function ProfileClient() {
           }
         );
 
-        const subscriptionData = await subscriptionResponse.json();
+        const subscriptionData =
+          await subscriptionResponse.json();
 
         if (!subscriptionResponse.ok) {
-          throw new Error(
-            subscriptionData.message || "Could not fetch subscription"
+          console.warn(
+            subscriptionData.message ||
+              "Could not fetch subscription"
           );
+
+          setActiveSubscription(null);
+          return;
         }
 
-        setActiveSubscription(subscriptionData.active_subscription);
+        setActiveSubscription(
+          subscriptionData.active_subscription || null
+        );
+
       } catch (error) {
         console.error(error);
+
         setUser(null);
         setActiveSubscription(null);
+
       } finally {
         setLoading(false);
       }
@@ -167,12 +191,14 @@ export default function ProfileClient() {
   }
 
   const fullName = `${user.user_first_name} ${user.user_last_name}`;
+
   const latestWashDate = new Date();
   const latestWashDay = latestWashDate.getDate();
 
   const subscriptionIcon =
     activeSubscription?.subscription_icon &&
-    activeSubscription.subscription_icon in subscriptionIconMap
+    activeSubscription.subscription_icon in
+      subscriptionIconMap
       ? subscriptionIconMap[
           activeSubscription.subscription_icon as keyof typeof subscriptionIconMap
         ]
@@ -222,7 +248,8 @@ export default function ProfileClient() {
                 </p>
 
                 <p className="text-sm mt-2 text-(--solid-white)">
-                  Status: {activeSubscription.subscription_status}
+                  Status:{" "}
+                  {activeSubscription.subscription_status}
                 </p>
 
                 <ul className="text-(--solid-white) mt-4 space-y-1 text-sm">
@@ -230,11 +257,11 @@ export default function ProfileClient() {
                     <h4>Fordele:</h4>
                   </Heading>
 
-                  {activeSubscription.features.map((feature, index) => (
-                    <li key={index}>
-                      {feature}
-                    </li>
-                  ))}
+                  {activeSubscription.features.map(
+                    (feature, index) => (
+                      <li key={index}>{feature}</li>
+                    )
+                  )}
                 </ul>
               </>
             ) : (

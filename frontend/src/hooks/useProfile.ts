@@ -3,6 +3,7 @@
 import { useState } from "react";
 
 import type { User } from "@/src/types/profile";
+import { API_BASE_URL } from "@/src/lib/api";
 
 export function useProfile() {
   const [user, setUser] = useState<User | null>(null);
@@ -18,7 +19,7 @@ export function useProfile() {
         throw new Error("Not logged in");
       }
 
-      const response = await fetch("http://127.0.0.1/profile", {
+      const response = await fetch(`${API_BASE_URL}/profile`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -30,7 +31,9 @@ export function useProfile() {
         localStorage.removeItem("access_token");
         localStorage.removeItem("user");
 
-        throw new Error(responseData.message || "Could not load profile");
+        throw new Error(
+          responseData.message || "Could not load profile"
+        );
       }
 
       const userData: User = responseData.user;
