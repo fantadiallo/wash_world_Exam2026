@@ -110,7 +110,10 @@ export default function Locations() {
         </Section>
       </PageContainer>
 
-      <Footer phone="+4570707070" />
+      <Footer
+              address="Dynamovej 4, 2860 Søborg"
+              phone="+45 70 70 70 70"
+            />
     </>
   );
 }

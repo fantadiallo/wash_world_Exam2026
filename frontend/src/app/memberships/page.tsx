@@ -12,6 +12,8 @@ import Section from "@/src/components/sections/Section";
 import Paragraph from "@/src/components/paragraphs/Paragraph";
 import { API_BASE_URL } from "@/src/lib/api";
 import type { Membership } from "@/src/types/membership";
+import Footer from "@/src/components/layout/Footer";
+
 
 async function getMemberships(): Promise<Membership[]> {
   try {
@@ -145,6 +147,10 @@ export default async function Memberships() {
           </div>
         </Section>
       </PageContainer>
+       <Footer
+               address="Dynamovej 4, 2860 Søborg"
+               phone="+45 70 70 70 70"
+             />
     </Layout>
   );
 }
