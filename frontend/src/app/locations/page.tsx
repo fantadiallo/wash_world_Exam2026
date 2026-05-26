@@ -1,56 +1,62 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from "react";
 
-import Navigation from "@/src/components/navigation/Navigation"
-import CardsContainer from "@/src/components/containers/CardsContainer"
-import LocationCard from "@/src/components/cards/LocationCard"
-import PageContainer from '@/src/components/containers/PageContainer'
-import Map from '@/src/components/maps/Map'
-import useLocationsWithDistance from '@/src/hooks/useLocationsWithDistance'
-import Heading from '@/src/components/headings/Heading'
-import Footer from '@/src/components/layout/Footer'
-import Section from '@/src/components/sections/Section'
+import Navigation from "@/src/components/navigation/Navigation";
+import CardsContainer from "@/src/components/containers/CardsContainer";
+import LocationCard from "@/src/components/cards/LocationCard";
+import PageContainer from "@/src/components/containers/PageContainer";
+import Map from "@/src/components/maps/Map";
+import useLocationsWithDistance from "@/src/hooks/useLocationsWithDistance";
+import Heading from "@/src/components/headings/Heading";
+import Footer from "@/src/components/layout/Footer";
+import Section from "@/src/components/sections/Section";
+import { API_BASE_URL } from "@/src/lib/api";
 
 export default function Locations() {
-  const [locations, setLocations] = useState<any[]>([])
-  const [loading, setLoading] = useState(true)
+  const [locations, setLocations] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const [currentUserLocation, setCurrentUserLocation] = useState<{
-    lat: number
-    lng: number
-  } | null>(null)
-
- 
-     useEffect(() => {
-         const fetchLocations = async () => {
-             try {
-                 const res = await fetch('http://127.0.0.1/locations')
-                 const data = await res.json()
- 
-                 setLocations(data)
-             } catch (err) {
-                 console.error('Failed to fetch locations:', err)
-             } finally {
-                 setLoading(false)
-             }
-         }
- 
-         fetchLocations()
-     }, [])
- 
-     const locationsWithDistance = useLocationsWithDistance(locations ?? [])
- 
-     const closestFourLocations = [...locationsWithDistance]
-         .sort((a, b) => Number(a.distance) - Number(b.distance))
-         .slice(0, 4)
+    lat: number;
+    lng: number;
+  } | null>(null);
 
   useEffect(() => {
+    async function fetchLocations() {
+      try {
+        const res = await fetch(`${API_BASE_URL}/locations`);
+        const data = await res.json();
+
+        setLocations(data);
+      } catch (err) {
+        console.error("Failed to fetch locations:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchLocations();
+  }, []);
+
+  useEffect(() => {
+    if (!navigator.geolocation) return;
+
     navigator.geolocation.getCurrentPosition((position) => {
-      const { latitude, longitude } = position.coords
-      setCurrentUserLocation({ lat: latitude, lng: longitude })
-    })
-  }, [])
+      const { latitude, longitude } = position.coords;
+
+      setCurrentUserLocation({
+        lat: latitude,
+        lng: longitude,
+      });
+    });
+  }, []);
+
+  const locationsWithDistance = useLocationsWithDistance(locations ?? []);
+
+  const closestFourLocations = [...locationsWithDistance]
+    .sort((a, b) => Number(a.distance) - Number(b.distance))
+    .slice(0, 4);
 
   return (
     <>
@@ -76,7 +82,10 @@ export default function Locations() {
                 <p>Loading...</p>
               ) : closestFourLocations.length > 0 ? (
                 closestFourLocations.map((location, index) => (
-                  <LocationCard key={location.id ?? index} {...location} />
+                  <LocationCard
+                    key={location.id ?? index}
+                    {...location}
+                  />
                 ))
               ) : (
                 <p>Ingen lokationer</p>
@@ -86,20 +95,22 @@ export default function Locations() {
         </Section>
 
         <Section variant="page">
-          <div className="w-full h-[400px]">
+          <div className="w-full min-h-[520px] mb-32">
             <Heading variant="section_sub_heading_green">
               Oversigt over vaskehaller
             </Heading>
 
-            <Map
-              locations={locationsWithDistance}
-              currentUserLocation={currentUserLocation}
-            />
+            <div className="w-full h-[450px] mt-4 rounded-xl overflow-hidden">
+              <Map
+                locations={locationsWithDistance}
+                currentUserLocation={currentUserLocation}
+              />
+            </div>
           </div>
         </Section>
       </PageContainer>
-      <Footer phone="+4570707070" />
 
+      <Footer phone="+4570707070" />
     </>
-  )
+  );
 }
