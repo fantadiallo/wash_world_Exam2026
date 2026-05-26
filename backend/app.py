@@ -465,7 +465,6 @@ def create_subscription():
 
         db, cursor = x.db()
 
-        # 1. Check user exists
         q_user = """
             SELECT user_id
             FROM users
@@ -481,12 +480,11 @@ def create_subscription():
                 "message": "User not found"
             }), 404
 
-        # 2. Check subscription type exists
         q_subscription_type = """
             SELECT
                 subscription_type_id,
                 subscription_name,
-                subscription_price,
+                subscription_price
             FROM subscription_types
             WHERE subscription_type_id = %s
             LIMIT 1
@@ -500,7 +498,6 @@ def create_subscription():
                 "message": "Subscription type not found"
             }), 404
 
-        # 3. Check if user already has an active subscription
         q_existing = """
             SELECT subscription_id
             FROM subscriptions
@@ -517,7 +514,6 @@ def create_subscription():
                 "message": "User already has an active subscription"
             }), 409
 
-        # 4. Insert into subscriptions
         q_insert_subscription = """
             INSERT INTO subscriptions (
                 subscription_id,
@@ -539,7 +535,6 @@ def create_subscription():
             dates["renewal_date"]
         ))
 
-        # 5. Update or create dashboard row
         q_dashboard = """
             INSERT INTO user_dashboard (
                 user_id,
@@ -564,7 +559,7 @@ def create_subscription():
                 "subscription_type_id": subscription_type["subscription_type_id"],
                 "subscription_name": subscription_type["subscription_name"],
                 "subscription_price": float(subscription_type["subscription_price"]) if subscription_type["subscription_price"] is not None else 0,
-                "subscription_description": subscription_type["subscription_description"],
+                "subscription_description": "",
                 "subscription_status": subscription_status,
                 "subscription_created_at": dates["created_at"].isoformat(),
                 "subscription_start_date": dates["start_date"].isoformat(),
@@ -592,7 +587,6 @@ def create_subscription():
             cursor.close()
         if "db" in locals():
             db.close()
-
 ###########################################################
 
 @app.get("/subscriptions/user/<user_id>")
