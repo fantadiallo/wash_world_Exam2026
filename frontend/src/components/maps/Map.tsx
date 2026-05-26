@@ -13,6 +13,8 @@ import FilterLocationsButton from '../buttons/FilterLocationsButton'
 import FilterLocationButtonsContainer from '../containers/FilterLocationButtonsContainer';
 import Heading from '@/src/components/headings/Heading'
 import Paragraph from '../paragraphs/Paragraph';
+import { API_BASE_URL } from '@/src/lib/api';
+
 
 const filters: Filter[] = [
     {id: 'car_wash', text: 'Vaskehaller'},
@@ -31,7 +33,8 @@ export default function Map({ view, location, currentUserLocation }: MapProps)
             {
                 try
                 {
-                    const res = await fetch('http://127.0.0.1/locations')
+                    const res = await fetch(`${API_BASE_URL}/locations`
+ )
                     const data = await res.json()
                     console.log(data)
                     setLocations(data)
@@ -63,9 +66,10 @@ export default function Map({ view, location, currentUserLocation }: MapProps)
 
     return (
         <MapContainer
-            className="max-w-full h-full"
+            className="max-w-full h-full mb-6"
             center={currentUserLocation}
             zoom={13}
+
         >
         
         <FilterLocationButtonsContainer>

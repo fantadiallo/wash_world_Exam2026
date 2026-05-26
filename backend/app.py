@@ -8,7 +8,7 @@ from email.mime.text import MIMEText
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
-
+from carwash_locations import WASH_WORLD_LOCATIONS
 import x
 
 from icecream import ic
@@ -715,3 +715,18 @@ def get_subscriptions_by_user(user_id):
             cursor.close()
         if "db" in locals():
             db.close()
+
+
+#####################################################
+
+@app.get("/locations")
+def get_locations():
+    return jsonify(WASH_WORLD_LOCATIONS)
+
+##########################################
+@app.get("/locations/<id>")
+def get_location(id):
+ for location in WASH_WORLD_LOCATIONS:
+     if location['id'] == id:
+         return jsonify(location)
+     return jsonify({"error":"Location not found"}),400

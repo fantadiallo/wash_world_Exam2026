@@ -98,8 +98,8 @@ export default function Locations() {
           </div>
         </Section>
       </PageContainer>
-
       <Footer phone="+4570707070" />
+
     </>
   )
 }
