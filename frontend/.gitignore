@@ -40,3 +40,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+node_modules/
+.next/
+cypress/videos/
+cypress/screenshots/
+__pycache__/
+.venv/
+.env
+*.pyc
