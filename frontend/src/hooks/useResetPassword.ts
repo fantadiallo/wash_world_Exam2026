@@ -1,6 +1,7 @@
 "use client";
 import type { ResetPasswordData } from "@/src/types/resetPassword";
 import { useState } from "react";
+import { API_BASE_URL } from "../lib/api";
 
 export function useResetPassword() {
   const [isLoading, setIsLoading] = useState(false);
@@ -9,7 +10,7 @@ export function useResetPassword() {
     setIsLoading(true);
 
     try {
-      const response = await fetch("http://127.0.0.1/reset-password", {
+      const response = await fetch(`${API_BASE_URL}//reset-password`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

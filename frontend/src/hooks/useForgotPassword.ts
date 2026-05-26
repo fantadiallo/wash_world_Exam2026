@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import type { ForgotPasswordData } from "@/src/types/forgotPassword";
+import { API_BASE_URL } from "../lib/api";
 
 
 export function useForgotPassword() {
@@ -12,7 +12,7 @@ export function useForgotPassword() {
     setIsLoading(true);
 
     try {
-      const response = await fetch("http://127.0.0.1/forgot-password", {
+      const response = await fetch(`${API_BASE_URL}/forgot-password`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
