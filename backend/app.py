@@ -38,13 +38,13 @@ def send_email(receiver_email, subject, html):
         server.starttls()
         server.login(sender_email, password)
         server.sendmail(sender_email, receiver_email, message.as_string())
-
+#########################################################################################
 
 @app.get("/")
 def show_index():
     return jsonify({"success": True, "message": "Backend is running"}), 200
 
-
+################################################################################
 @app.post("/register-user")
 def register_user():
     try:
@@ -131,7 +131,7 @@ def register_user():
             db.close()
 
 
-
+################################################################################################
 
 @app.post("/login-user")
 def login_user():
@@ -196,7 +196,7 @@ def login_user():
         if "db" in locals():
             db.close()
 
-
+##################################################################
 @app.post("/forgot-password")
 def forgot_password():
     try:
